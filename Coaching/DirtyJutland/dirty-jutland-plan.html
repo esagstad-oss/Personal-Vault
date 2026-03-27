@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dirty Jutland 2026 — Final Training Plan</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #f97316;
+    --accent2: #3b82f6;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --purple: #a855f7;
+    --cyan: #06b6d4;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.6; }
+
+  /* ── HEADER ── */
+  .header { background: linear-gradient(135deg, #1a1d27 0%, #0f1117 60%); border-bottom: 1px solid var(--border); padding: 28px 32px 24px; }
+  .header h1 { font-size: 2rem; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+  .header p { color: var(--muted); margin-top: 4px; font-size: 0.95rem; }
+  .stats-bar { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+  .stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 18px; }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+  .stat-value { font-size: 1.2rem; font-weight: 700; color: var(--text); }
+  .stat-value.orange { color: var(--accent); }
+  .stat-value.blue { color: var(--accent2); }
+  .stat-value.green { color: var(--green); }
+
+  /* ── NAV ── */
+  .nav { position: sticky; top: 0; z-index: 100; background: rgba(15,17,23,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; gap: 4px; overflow-x: auto; }
+  .nav a { display: inline-block; padding: 14px 16px; font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .nav a:hover { color: var(--text); }
+  .nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .nav a.race { color: var(--green); }
+  .nav a.race.active { border-bottom-color: var(--green); }
+
+  /* ── LAYOUT ── */
+  .main { padding: 32px; max-width: 1400px; }
+
+  /* ── WEEK SECTION ── */
+  .week-section { margin-bottom: 48px; }
+  .week-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .week-badge { font-size: 1.5rem; font-weight: 900; color: var(--accent); }
+  .week-title { font-size: 1.1rem; font-weight: 700; }
+  .week-dates { color: var(--muted); font-size: 0.88rem; }
+  .phase-chip { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 20px; }
+  .phase-BUILD { background: rgba(249,115,22,0.15); color: var(--accent); border: 1px solid rgba(249,115,22,0.3); }
+  .phase-DELOAD { background: rgba(59,130,246,0.15); color: var(--accent2); border: 1px solid rgba(59,130,246,0.3); }
+  .phase-SHARPEN { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+  .phase-TAPER { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+  .phase-RACE { background: rgba(34,197,94,0.25); color: var(--green); border: 1px solid var(--green); }
+
+  /* ── MODIFICATIONS BANNER ── */
+  .mod-banner { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 20px; }
+  .mod-banner h4 { color: var(--red); font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .mod-banner ul { padding-left: 18px; color: var(--text); font-size: 13px; }
+  .mod-banner li { margin-bottom: 4px; }
+
+  /* ── DAY GRID ── */
+  .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+  @media (max-width: 1200px) { .week-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 800px) { .week-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .week-grid { grid-template-columns: 1fr; } }
+
+  .day-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.15s, transform 0.15s; cursor: pointer; }
+  .day-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .day-card.today { border-color: var(--cyan); box-shadow: 0 0 0 1px var(--cyan); }
+  .day-card.rest-day { opacity: 0.6; }
+  .day-card.race-day { border-color: var(--green); box-shadow: 0 0 12px rgba(34,197,94,0.3); }
+
+  .day-header { padding: 10px 14px 8px; border-bottom: 1px solid var(--border); }
+  .day-name { font-weight: 700; font-size: 13px; color: var(--text); }
+  .day-date { font-size: 11px; color: var(--muted); }
+  .day-type-icons { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
+  .icon-chip { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
+  .chip-bike { background: rgba(249,115,22,0.2); color: var(--accent); }
+  .chip-strength { background: rgba(168,85,247,0.2); color: var(--purple); }
+  .chip-rest { background: rgba(148,163,184,0.1); color: var(--muted); }
+  .chip-race { background: rgba(34,197,94,0.3); color: var(--green); font-weight: 800; }
+
+  .day-body { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .day-section { font-size: 12px; }
+  .day-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 3px; }
+  .day-section-content { color: var(--text); line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+  .day-section-content.highlight-intensity { color: var(--accent); font-weight: 600; }
+  .day-section-content.highlight-recovery { color: var(--cyan); }
+
+  /* ── ACCORDION DETAIL ── */
+  .day-detail { display: none; background: var(--surface2); border-top: 1px solid var(--border); padding: 0; }
+  .day-detail.open { display: block; }
+  .detail-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .detail-tab { flex: 1; padding: 8px; font-size: 11px; font-weight: 600; text-align: center; cursor: pointer; color: var(--muted); background: none; border: none; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.15s; }
+  .detail-tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .detail-tab.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+  .detail-pane { display: none; padding: 14px; font-size: 12px; line-height: 1.6; }
+  .detail-pane.active { display: block; }
+  .detail-pane pre { white-space: pre-wrap; word-break: break-word; color: var(--text); }
+
+  /* ── NUTRITION TABLE ── */
+  .nut-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .nut-row:last-child { border-bottom: none; }
+  .nut-meal { color: var(--muted); flex: 1; }
+  .nut-macros { color: var(--text); font-weight: 500; text-align: right; }
+  .nut-total { background: rgba(249,115,22,0.1); padding: 6px 8px; border-radius: 6px; margin-top: 8px; font-weight: 700; display: flex; justify-content: space-between; }
+
+  /* ── SUPPS SECTION ── */
+  .supps-list { font-size: 12px; color: var(--text); white-space: pre-wrap; }
+
+  /* ── POWER ZONES LEGEND ── */
+  .zones-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .zone-item { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 12px; }
+  .zone-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── RACE DAY SPECIAL ── */
+  .race-card { background: linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(22,163,74,0.05) 100%); border: 2px solid var(--green); border-radius: var(--radius); padding: 24px; margin-top: 16px; }
+  .race-card h3 { color: var(--green); font-size: 1.3rem; font-weight: 800; margin-bottom: 16px; }
+  .race-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .race-section { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 14px; }
+  .race-section h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green); margin-bottom: 8px; }
+  .race-section p, .race-section li { font-size: 12px; color: var(--text); line-height: 1.6; }
+  .race-section ul { padding-left: 16px; }
+
+  /* ── SUMMARY TABS ── */
+  .summary-section { margin-bottom: 40px; }
+  .summary-section h2 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .summary-section h2 span { font-size: 18px; }
+
+  /* ── WEEKLY METRICS ── */
+  .metrics-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+  .metric-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; min-width: 120px; }
+  .metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 4px; }
+  .metric-val { font-size: 1.4rem; font-weight: 800; }
+  .metric-val.orange { color: var(--accent); }
+  .metric-val.blue { color: var(--accent2); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { margin-bottom: 24px; }
+  .progress-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--yellow)); }
+  .race-progress { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+
+  /* tooltip / mod flag */
+  .mod-flag { display: inline-block; background: rgba(239,68,68,0.2); color: var(--red); border-radius: 4px; padding: 1px 6px; font-size: 10px; font-weight: 700; margin-left: 6px; }
+
+  .scrolltop { position: fixed; bottom: 24px; right: 24px; background: var(--accent); color: white; border: none; border-radius: 50%; width: 42px; height: 42px; font-size: 18px; cursor: pointer; opacity: 0; transition: opacity 0.2s; z-index: 200; }
+  .scrolltop.visible { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🚵 Dirty Jutland 2026</h1>
+  <p>Final 3-week training plan — March 27 → April 18 · 200km Gravel</p>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-label">FTP</div><div class="stat-value orange">310 W</div></div>
+    <div class="stat"><div class="stat-label">LT1</div><div class="stat-value blue">240 W / HR 123</div></div>
+    <div class="stat"><div class="stat-label">LT2</div><div class="stat-value blue">305–310 W / HR 143</div></div>
+    <div class="stat"><div class="stat-label">Weight</div><div class="stat-value">79 kg</div></div>
+    <div class="stat"><div class="stat-label">W/kg</div><div class="stat-value orange">3.92</div></div>
+    <div class="stat"><div class="stat-label">Race Day</div><div class="stat-value green">April 18 🏁</div></div>
+  </div>
+</div>
+
+<nav class="nav" id="mainNav">
+  <a href="#zones">Zones</a>
+  <a href="#w8">W8 · Deload</a>
+  <a href="#w9">W9 · Build</a>
+  <a href="#w10">W10 · Sharpen</a>
+  <a href="#w11" class="race">W11 · Race</a>
+  <a href="#supplements">Supps</a>
+  <a href="#raceday">Race Day</a>
+</nav>
+
+<div class="main">
+
+  <!-- COUNTDOWN -->
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Today: March 27</span><span id="countdown">— days to race</span></div>
+    <div class="progress-bar"><div class="progress-fill race-progress" id="raceProgress" style="width:0%"></div></div>
+  </div>
+
+  <!-- POWER ZONES -->
+  <section id="zones" class="summary-section">
+    <h2><span>⚡</span> Power Zones Reference</h2>
+    <div class="zones-legend">
+      <div class="zone-item"><div class="zone-dot" style="background:#3b82f6"></div><b>Z1 Recovery</b>&nbsp;&lt;186W (&lt;60% FTP)</div>
+      <div class="zone-item"><div class="zone-dot" style="background:#22c55e"></div><b>Z2 Endurance</b>&nbsp;186–240W (60–78%) · LT1 cap: 240W / HR 123</div>
+      <div class="zone-item"><div class="zone-dot" style="background:#eab308"></div><b>Sweet Spot</b>&nbsp;264–285W (85–92%)</div>
+      <div class="zone-item"><div class="zone-dot" style="background:#f97316"></div><b>Threshold</b>&nbsp;296–325W (95–105%) · LT2: 305–310W / HR 143</div>
+      <div class="zone-item"><div class="zone-dot" style="background:#ef4444"></div><b>VO2max</b>&nbsp;326–372W (105–120%)</div>
+    </div>
+    <div class="zones-legend">
+      <div class="zone-item"><div class="zone-dot" style="background:#22c55e"></div><b>Race target Z2:</b>&nbsp;190–235W · HR &lt;130</div>
+      <div class="zone-item"><div class="zone-dot" style="background:#eab308"></div><b>Race surge cap:</b>&nbsp;265W · HR &lt;137</div>
+      <div class="zone-item"><div class="zone-dot" style="background:#06b6d4"></div><b>Fueling:</b>&nbsp;90g carb/h · 700–1000mg sodium/h · Start km 15</div>
+    </div>
+  </section>
+
+  <!-- ══════════ WEEK 8 (REMAINING) ══════════ -->
+  <section id="w8" class="week-section">
+    <div class="week-header">
+      <div class="week-badge">W8</div>
+      <div>
+        <div class="week-title">DELOAD — Remaining Days <span class="phase-chip phase-DELOAD">Deload</span></div>
+        <div class="week-dates">March 27–29 · You are here</div>
+      </div>
+    </div>
+
+    <div class="mod-banner">
+      <h4>⚠ AI Modifications Applied to This Week</h4>
+      <ul>
+        <li>Saturday: Reduce HR cap to ≤120bpm (true aerobic recovery) — W8 Monday's 20×3min was very high load</li>
+        <li>Saturday: Remove any "if strong" tempo finish — keep purely Z1–low Z2</li>
+        <li>Sunday: Full rest, no optional Z2 bike</li>
+      </ul>
+    </div>
+
+    <div class="week-grid">
+
+      <!-- FRI Mar 27 -->
+      <div class="day-card today" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Friday</div>
+          <div class="day-date">Mar 27 · TODAY</div>
+          <div class="day-type-icons">
+            <span class="icon-chip chip-bike">Z2 Bike</span>
+            <span class="icon-chip chip-strength">Strength</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike</div>
+            <div class="day-section-content">40 min Z2 (run replacement)
+Power 186–240W · HR ≤123</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🏋 Strength (45–55 min, deload)</div>
+            <div class="day-section-content">A: Goblet squat 2×10 @ RPE 6–7
+B: RDL 2×8 @ RPE 7
+C: Incline DB press 2×10 @ RPE 7
+D: Lat pulldown 2×10 @ RPE 7
+E: Hip thrust 2×10 @ RPE 7
+F: Calves 2×12
+G: Optional arms 1–2 sets</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content highlight-intensity">3000 kcal · 170P / 400C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w8f')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w8f')">Recovery</button>
+            <button class="detail-tab" onclick="switchTab(event,'supps-w8f')">Supps</button>
+          </div>
+          <div class="detail-pane active" id="meals-w8f">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">25C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">48P · 126C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 108C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">37P · 81C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3000 kcal · 170P / 400C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w8f">
+            <pre>Foam roll light 6–8 min + 8–12 min downshift (NSDR or box breathing).</pre>
+          </div>
+          <div class="detail-pane" id="supps-w8f">
+            <div class="supps-list">Daily base:
+• Creatine 5g AM
+• Omega-3 2g EPA/DHA with meal
+• Vitamin D3 2000 IU
+• Magnesium glycinate 300–400mg PM
+• Glycine 3g + Taurine 1–2g + Inositol 2g + L-theanine 200mg PM
+• Beta-alanine 3.2g/day (1.6g AM + 1.6g PM)
+Optional: Caffeine 100–200mg pre-session (pair with 100mg theanine)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAT Mar 28 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Saturday</div>
+          <div class="day-date">Mar 28</div>
+          <div class="day-type-icons">
+            <span class="icon-chip chip-bike">Long Ride 3.5h</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike <span class="mod-flag">MODIFIED</span></div>
+            <div class="day-section-content highlight-intensity">3.5h aerobic base ONLY
+HR cap ≤120bpm (true recovery — not 127)
+Power cap ≤255W (82% FTP max)
+4–6×5 min high cadence 95–105rpm ok
+NO tempo finish, no race-pace work</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">⛽ During Fueling</div>
+            <div class="day-section-content">80–90g/h · Sodium 700–1000mg/h
+Start at 15 min</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content highlight-intensity">4000 kcal · 160P / 660C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w8sa')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w8sa')">Recovery</button>
+            <button class="detail-tab" onclick="switchTab(event,'supps-w8sa')">Supps</button>
+          </div>
+          <div class="detail-pane active" id="meals-w8sa">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">30C</span></div>
+            <div class="nut-row"><span class="nut-meal">During ride</span><span class="nut-macros">298C (gels/bars/bottles)</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 88C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 94C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 60C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 80C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 10C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>4000 kcal · 160P / 660C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w8sa">
+            <pre>After long ride:
+• 10–15 min easy walk
+• Legs up the wall 5 min
+• No deep stretching
+• Flexbeam 10 min if knee/hamstring niggles</pre>
+          </div>
+          <div class="detail-pane" id="supps-w8sa">
+            <div class="supps-list">Daily base:
+• Creatine 5g AM
+• Omega-3 2g EPA/DHA with meal
+• Vitamin D3 2000 IU
+• Magnesium glycinate 300–400mg PM
+• Glycine 3g + Taurine 1–2g + Inositol 2g + L-theanine 200mg PM
+Optional: Caffeine 100–200mg 30–45' pre-ride</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUN Mar 29 -->
+      <div class="day-card rest-day" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Sunday</div>
+          <div class="day-date">Mar 29</div>
+          <div class="day-type-icons"><span class="icon-chip chip-rest">Full Rest</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">😴 Rest</div>
+            <div class="day-section-content">Full rest. 20–30 min easy walk.
+10 min mobility if stiff.
+Limit screen/stress at night.</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">2500 kcal · 160P / 262C / 90F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w8su')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w8su')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w8su">
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 75C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 69C · 31F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 58C · 29F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>2500 kcal · 160P / 262C / 90F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w8su">
+            <pre>Full rest. 20–30 min easy walk + 10 min mobility.
+Flexbeam 10–15 min PM if any soreness.
+Prioritize 8–9h sleep tonight (start W9 fresh).</pre>
+          </div>
+        </div>
+      </div>
+    </div><!-- end week-grid -->
+  </section>
+
+  <!-- ══════════ WEEK 9 — BUILD ══════════ -->
+  <section id="w9" class="week-section">
+    <div class="week-header">
+      <div class="week-badge">W9</div>
+      <div>
+        <div class="week-title">FINAL BUILD <span class="phase-chip phase-BUILD">Build</span></div>
+        <div class="week-dates">March 30 – April 5 · Last hard week · ~784 min total</div>
+      </div>
+    </div>
+
+    <div class="mod-banner">
+      <h4>⚠ AI Modifications Applied</h4>
+      <ul>
+        <li>Monday: Keep 14×3min (as written — appropriate post-deload). Target bottom of zone 95–97% FTP. If legs still flat, do 12×3min and extend Z2.</li>
+        <li>Thursday: Lower end of SS range (85–87% FTP = 263–270W) — strength fatigue from Wed is real</li>
+        <li>Saturday: Push to 5–6h <b>outdoors</b> if possible. This is your most important session. Practice fueling at 90g/h on real roads. If indoor only: 4.5h with extended LT1 blocks.</li>
+      </ul>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-box"><div class="metric-label">Bike</div><div class="metric-val orange">439 min</div></div>
+      <div class="metric-box"><div class="metric-label">Strength</div><div class="metric-val" style="color:var(--purple)">200 min</div></div>
+      <div class="metric-box"><div class="metric-label">Total</div><div class="metric-val blue">784 min</div></div>
+    </div>
+
+    <div class="week-grid">
+
+      <!-- MON Mar 30 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Monday</div><div class="day-date">Mar 30</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">FTP Intervals</span><span class="icon-chip chip-strength">Upper</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike — FTP Micro-Intervals</div>
+            <div class="day-section-content highlight-intensity">14×3min @95–98% FTP (295–304W)
+Rest: 30s
++ 53min Z2 @186–240W
+Total ~2h15min</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🏋 Strength (Upper + Core, 45–60 min)</div>
+            <div class="day-section-content">A: Bench or OHP 4×6 @ RPE 7
+B: Pull-ups or Pulldown 4×6–10
+C: DB row 3×10
+D: Lateral raise 3×12–15
+E: Triceps + Biceps 2–3×10–15
+F: Pallof press 3×10/side + Plank 2×45–60s
++Bulgarian Split Squat 3×6–8/leg @ RIR 2–3</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content highlight-intensity">3300 kcal · 165P / 502C / 70F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w9mo')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w9mo')">Recovery</button>
+            <button class="detail-tab" onclick="switchTab(event,'supps-w9mo')">Supps</button>
+          </div>
+          <div class="detail-pane active" id="meals-w9mo">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">30C</span></div>
+            <div class="nut-row"><span class="nut-meal">During ride</span><span class="nut-macros">70C (60–80g/h)</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">45P · 109C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 125C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 60C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">35P · 98C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 10C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3300 kcal · 165P / 502C / 70F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w9mo">
+            <pre>Post-ride: 5–8 min easy spin-down + 5 min nasal breathing.
+Evening: Flexbeam 10–15 min + gentle hamstring nerve glide
+(NOT aggressive stretching).
+
+If tired: Do 12×3min only, extend Z2 to fill time.
+If strong: Shorten recoveries to 20s on last 6 reps.</pre>
+          </div>
+          <div class="detail-pane" id="supps-w9mo">
+            <div class="supps-list">Daily base:
+• Creatine 5g AM · Omega-3 2g EPA/DHA
+• Vitamin D3 2000 IU · Mag glycinate 300–400mg PM
+• Glycine 3g + Taurine 1–2g + Inositol 2g + L-theanine 200mg PM
+• Beta-alanine 1.6g AM + 1.6g PM
+Pre-session: Caffeine 100–200mg + 100mg L-theanine (30–45' pre)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TUE Mar 31 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Tuesday</div><div class="day-date">Mar 31</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Z2 Optional</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike</div>
+            <div class="day-section-content">OFF or 45–60 min Z2
+@205–235W · HR ≤120</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">2800 kcal · 160P / 360C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w9tu')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w9tu')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w9tu">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">25C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 108C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 94C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 73C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>2800 kcal · 160P / 360C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w9tu">
+            <pre>Foam roll calves/quads 8–10 min.
+Hip mobility 8 min.
+Flexbeam 10 min if hamstring tight.
+OFF option is valid — prioritize recovery over volume.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- WED Apr 1 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Wednesday</div><div class="day-date">Apr 1</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Z2 80min</span><span class="icon-chip chip-strength">Heavy</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike</div>
+            <div class="day-section-content">80 min Z2 @186–240W · HR ≤123</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🏋 Strength — Heavy Bias (volume rebound)</div>
+            <div class="day-section-content">A: Trap bar DL 5×4 @ RPE 7–8
+B: Bench press 4×5 @ RPE 7–8
+C: Split squat 3×6–8/leg @ RPE 8
+D: Chest-supported row 4×6–8
+E: Nordic curl / slider 3×6–10 (3–4s ecc)
+F: Calf raise 3×10–12
+G: Anti-rotation core 3×8–10/side
+Rest: 2–3 min heavy; 60–90s accessories</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">3000 kcal · 170P / 400C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w9we')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w9we')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w9we">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">25C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">48P · 126C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 108C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">37P · 81C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3000 kcal · 170P / 400C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w9we">
+            <pre>After strength:
+• Massage gun glute/hamstring 6–8 min
+• Light hip flexor stretch (NOT aggressive)
+• Flexbeam 10 min if sore
+NOTE: Thu threshold quality depends on Tue/Wed recovery.
+Keep Wed strength below RPE 9 on every set.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- THU Apr 2 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Thursday</div><div class="day-date">Apr 2</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Sweet Spot</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike — Sweet Spot <span class="mod-flag">MODIFIED</span></div>
+            <div class="day-section-content highlight-intensity">Warm-up: 10 min @65–70% FTP
+  + 3×1min @105% FTP (1' @ 60% FTP)
+
+Main: 2×30 min @263–277W (85–88% FTP)
+  — modified from 85–90% due to Wed strength
+  Recovery: 5 min @60% FTP
+
+Cool-down: 10 min @60–65%</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">⛽ Fueling</div>
+            <div class="day-section-content">60–70g/h · 500–750ml/h</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content highlight-intensity">3100 kcal · 160P / 458C / 70F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w9th')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w9th')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w9th">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">30C</span></div>
+            <div class="nut-row"><span class="nut-meal">During ride</span><span class="nut-macros">60C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 94C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 112C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 60C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 92C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 10C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3100 kcal · 160P / 458C / 70F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w9th">
+            <pre>After ride:
+• 10 min easy spin
+• Couch stretch 2×45s/side
+• Thoracic mobility
+• Flexbeam 10–15 min
+
+If tired: 2×25 min @85%
+If strong: 2×35 min @88%</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- FRI Apr 3 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Friday</div><div class="day-date">Apr 3</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Z2 60min</span><span class="icon-chip chip-strength">Hypertrophy</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike</div>
+            <div class="day-section-content">60 min Z2 @186–240W · HR ≤123</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🏋 Strength — Hypertrophy (60–75 min)</div>
+            <div class="day-section-content">A: Front-foot elevated split squat 3×10/leg @ RPE 7–8
+B: RDL 3×8 @ RPE 7–8
+C: Hip thrust 3×10 @ RPE 7–8
+D: Incline DB press 4×8–12 @ RPE 7–8
+E: Lat pulldown / pull-ups 4×8–12
+F: Seated cable row 3×10–12
+G: Calf raise 3×12–15
+H: Dead bug / side plank 2–3 sets</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">3000 kcal · 170P / 400C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w9fr')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w9fr')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w9fr">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">25C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">48P · 126C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 108C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">37P · 81C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3000 kcal · 170P / 400C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w9fr">
+            <pre>Foam roll light 6–8 min.
+NSDR or box breathing 8–12 min (downshift).
+Pre-load for Saturday long ride:
+• Extra 50–100g carbs at dinner tonight
+• Drink 500ml water before bed</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAT Apr 4 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Saturday</div><div class="day-date">Apr 4</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Long 4.5–6h ⭐</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 KEY SESSION <span class="mod-flag">OUTDOORS CRITICAL</span></div>
+            <div class="day-section-content highlight-intensity">4.5–6h (push toward 5.5h if legs good)
+OUTDOORS on gravel/road if at all possible
+HR cap ≤78% HRmax · Power cap ≤270W
+4–6×5min high-cadence 95–105rpm
+Last 45–60 min: steady @245–265W if HR controlled
+PRACTISE race fueling: 90g/h from min 15</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">⛽ During Fueling</div>
+            <div class="day-section-content">90g carb/h · Sodium 700–1000mg/h
+Practice opening bars/gels on bike
+Mix gels + chews for gut training</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content highlight-intensity">4000 kcal · 160P / 660C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w9sa')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w9sa')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w9sa">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">30C</span></div>
+            <div class="nut-row"><span class="nut-meal">During ride</span><span class="nut-macros">382–450C depending on duration</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 51C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 63C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 60C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 64C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 10C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>4000 kcal · 160P / 660C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w9sa">
+            <pre>After ride:
+• 10–15 min easy walk
+• Legs up the wall 5 min
+• No deep stretching
+• Flexbeam 10 min if knee/hamstring niggles
+• 50g fast carbs + 30g protein within 20 min of finish</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUN Apr 5 -->
+      <div class="day-card rest-day" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Sunday</div><div class="day-date">Apr 5</div>
+          <div class="day-type-icons"><span class="icon-chip chip-rest">Full Rest</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">😴 Rest</div>
+            <div class="day-section-content">Full rest. 20–30 min easy walk.
+10 min mobility if stiff.</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">2500 kcal · 160P / 262C / 90F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w9su')">Meals</button>
+          </div>
+          <div class="detail-pane active" id="meals-w9su">
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 75C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 69C · 31F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 58C · 29F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>2500 kcal · 160P / 262C / 90F</span></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end week-grid -->
+  </section>
+
+  <!-- ══════════ WEEK 10 — SHARPEN ══════════ -->
+  <section id="w10" class="week-section">
+    <div class="week-header">
+      <div class="week-badge">W10</div>
+      <div>
+        <div class="week-title">SHARPEN <span class="phase-chip phase-SHARPEN">Sharpen</span></div>
+        <div class="week-dates">April 6–12 · Volume drops, quality maintained · ~635 min</div>
+      </div>
+    </div>
+
+    <div class="mod-banner">
+      <h4>⚠ AI Modifications Applied</h4>
+      <ul>
+        <li>Monday: Reduce to 18×3min as planned (NOT 20×3min). Stay at 95–98%, not 100%.</li>
+        <li>Thursday: Replace SS with <b>extended LT1 effort</b> — 90min @235–245W (upper Z2). More race-specific than SS this close to event.</li>
+        <li>Saturday: <b>Outdoors</b> second outdoor ride. 3.5h. Include 2×20min blocks @245–255W to simulate race middle sections.</li>
+      </ul>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-box"><div class="metric-label">Bike</div><div class="metric-val orange">330 min</div></div>
+      <div class="metric-box"><div class="metric-label">Strength</div><div class="metric-val" style="color:var(--purple)">185 min</div></div>
+      <div class="metric-box"><div class="metric-label">Total</div><div class="metric-val blue">635 min</div></div>
+    </div>
+
+    <div class="week-grid">
+
+      <!-- MON Apr 6 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Monday</div><div class="day-date">Apr 6</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">FTP Micro</span><span class="icon-chip chip-strength">Upper</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike — FTP Micro-Intervals</div>
+            <div class="day-section-content highlight-intensity">18×3min @95–100% FTP (295–310W)
+Rest: 30s
++ 46min Z2 @186–240W</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🏋 Strength (Upper + Core, 45–60 min)</div>
+            <div class="day-section-content">A: Bench or OHP 4×6 @ RPE 7
+B: Pull-ups or Pulldown 4×6–10
+C: DB row 3×10
+D: Lateral raise 3×12–15
+E: Triceps + Biceps 2–3×10–15
+F: Pallof press 3×10/side + Plank 2×45–60s
++Bulgarian Split Squat 3×6–8/leg @ RIR 2–3</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content highlight-intensity">3300 kcal · 165P / 502C / 70F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w10mo')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w10mo')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w10mo">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">30C</span></div>
+            <div class="nut-row"><span class="nut-meal">During ride</span><span class="nut-macros">70C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">45P · 109C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 125C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 60C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">35P · 98C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 10C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3300 kcal · 165P / 502C / 70F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w10mo">
+            <pre>Post: 5–8 min easy spin-down + nasal breathing 5 min.
+Evening: Flexbeam 10–15 min.
+Gentle hamstring nerve glide.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- TUE Apr 7 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Tuesday</div><div class="day-date">Apr 7</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Z2 Optional</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike</div>
+            <div class="day-section-content">OFF or 45–60 min Z2 @205–235W</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">2800 kcal · 160P / 360C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w10tu')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w10tu')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w10tu">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">25C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 108C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 94C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 73C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>2800 kcal · 160P / 360C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w10tu">
+            <pre>Foam roll calves/quads 8–10 min.
+Hip mobility 8 min.
+Flexbeam optional 10 min.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- WED Apr 8 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Wednesday</div><div class="day-date">Apr 8</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Z2 66min</span><span class="icon-chip chip-strength">Moderate</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike</div>
+            <div class="day-section-content">66 min Z2 @186–240W · HR ≤123</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🏋 Strength — Keep it, don't chase fatigue</div>
+            <div class="day-section-content">A: Trap bar DL 3×4 @ RPE 7–8
+B: Bench press 3×5 @ RPE 7
+C: Split squat 2×8/leg @ RPE 7
+D: Chest-supported row 3×8 @ RPE 7
+E: Nordic slider 2×8 (slow ecc)
+F: Calf raise 3×10
+G: Anti-rotation core 2×10/side
+Keep all sets 1–2 reps from failure</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">3000 kcal · 170P / 400C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w10we')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w10we')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w10we">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">25C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">48P · 126C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 108C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">37P · 81C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3000 kcal · 170P / 400C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w10we">
+            <pre>After strength:
+• Massage gun glute/hamstring 6–8 min
+• Light hip flexor stretch
+• Flexbeam 10 min if sore</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- THU Apr 9 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Thursday</div><div class="day-date">Apr 9</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">LT1 Extended</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike — Extended LT1 <span class="mod-flag">MODIFIED</span></div>
+            <div class="day-section-content highlight-intensity">Warm-up: 15 min @65–70% FTP
+
+Main: 90 min @235–245W (upper Z2 / LT1)
+  HR must stay ≤127bpm throughout
+  If HR creeps above 127 → reduce to 228W
+  This is RACE SPECIFIC work
+
+Cool-down: 15 min easy</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">⛽ Fueling</div>
+            <div class="day-section-content">60–70g/h · Practice with race products</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content highlight-intensity">3100 kcal · 160P / 458C / 70F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w10th')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w10th')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w10th">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">30C</span></div>
+            <div class="nut-row"><span class="nut-meal">During ride</span><span class="nut-macros">60C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 94C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 112C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 60C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 92C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 10C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3100 kcal · 160P / 458C / 70F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w10th">
+            <pre>After ride:
+• 10 min easy spin
+• Couch stretch 2×45s/side
+• Flexbeam 10–15 min</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- FRI Apr 10 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Friday</div><div class="day-date">Apr 10</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Z2 46min</span><span class="icon-chip chip-strength">Light</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike</div>
+            <div class="day-section-content">46 min Z2 @186–230W · HR ≤118</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🏋 Strength — Light (keep freshness)</div>
+            <div class="day-section-content">A: Goblet squat 3×8 @ RPE 6–7
+B: RDL 3×8 @ RPE 7
+C: Incline DB press 3×10 @ RPE 7
+D: Lat pulldown 3×10 @ RPE 7
+E: Hip thrust 3×10 @ RPE 7
+Keep it 45–55 min max</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">3000 kcal · 170P / 400C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w10fr')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w10fr')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w10fr">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">25C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">48P · 126C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 108C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">37P · 81C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3000 kcal · 170P / 400C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w10fr">
+            <pre>Foam roll light 6–8 min.
+NSDR / box breathing 8–12 min.
+Tonight: carb-load dinner — add 80–100g extra carbs.
+Sleep 8+ hours.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAT Apr 11 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Saturday</div><div class="day-date">Apr 11</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Long 3.5h ⭐</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike — Outdoor Race Simulation <span class="mod-flag">OUTDOORS</span></div>
+            <div class="day-section-content highlight-intensity">3.5h OUTDOORS on gravel/varied terrain
+HR cap ≤78% HRmax · Power ≤270W
+Include 2×20min @245–255W (race middle pace)
+4–6×5min high cadence sprinkled in
+90g/h fueling exactly as race day</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">⛽ During Fueling</div>
+            <div class="day-section-content">90g/h · 700–1000mg Na/h
+Use exact race-day products</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content highlight-intensity">4000 kcal · 160P / 660C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w10sa')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w10sa')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w10sa">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">30C</span></div>
+            <div class="nut-row"><span class="nut-meal">During ride</span><span class="nut-macros">297C (race products)</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 88C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 94C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 60C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 80C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 10C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>4000 kcal · 160P / 660C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w10sa">
+            <pre>After ride:
+• 10–15 min easy walk
+• Legs up the wall 5 min
+• No deep stretching
+• Flexbeam optional 10 min</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUN Apr 12 -->
+      <div class="day-card rest-day" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Sunday</div><div class="day-date">Apr 12</div>
+          <div class="day-type-icons"><span class="icon-chip chip-rest">Full Rest</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">😴 Rest</div>
+            <div class="day-section-content">Full rest. Easy 20–30 min walk.
+10 min mobility.
+RACE IS IN 6 DAYS.</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">2500 kcal · 160P / 262C / 90F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w10su')">Meals</button>
+          </div>
+          <div class="detail-pane active" id="meals-w10su">
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 75C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 69C · 31F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 58C · 29F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>2500 kcal · 160P / 262C / 90F</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ WEEK 11 — TAPER / RACE ══════════ -->
+  <section id="w11" class="week-section">
+    <div class="week-header">
+      <div class="week-badge">W11</div>
+      <div>
+        <div class="week-title">TAPER & RACE <span class="phase-chip phase-RACE">Race Week</span></div>
+        <div class="week-dates">April 13–18 · Race Saturday April 18 🏁</div>
+      </div>
+    </div>
+
+    <div class="mod-banner">
+      <h4>⚠ Critical Taper Modifications (Research-based)</h4>
+      <ul>
+        <li>Monday: Reduced to 10×3min @95% FTP only (original 20×3min would cause fatigue 5 days before race)</li>
+        <li>Thursday: Shortened activation session — 2×10min @90% FTP + 20min Z2</li>
+        <li>Friday: Short activation ride only, no strength</li>
+        <li>Volume reduction: ~60% vs W10 — appropriate for 8h endurance event taper</li>
+      </ul>
+    </div>
+
+    <div class="week-grid">
+
+      <!-- MON Apr 13 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Monday</div><div class="day-date">Apr 13 · -5 days</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">FTP Mini</span><span class="icon-chip chip-strength">Upper Light</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike <span class="mod-flag">MODIFIED</span></div>
+            <div class="day-section-content highlight-intensity">10×3min @95% FTP (295W)
+Rest: 30s between
++ 30min Z2 @200–230W
+Total ~90 min</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🏋 Strength (Upper only, 40 min max)</div>
+            <div class="day-section-content">A: OHP or Bench 3×6 @ RPE 6
+B: Pull-ups 3×6
+C: DB row 2×10
+D: Core: Plank 2×45s + Dead bug 2×8
+NO lower body. NO failure.</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition — Carb load begins</div>
+            <div class="day-section-content highlight-intensity">2700 kcal · 160P / 335C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w11mo')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w11mo')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w11mo">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">30C</span></div>
+            <div class="nut-row"><span class="nut-meal">During ride</span><span class="nut-macros">40C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 90C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 80C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 50C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 90C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>2700 kcal · 160P / 395C / 70F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w11mo">
+            <pre>Post: Easy spin-down 5 min + nasal breathing.
+Flexbeam 10–15 min evening.
+Hamstring nerve glide — gentle only.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- TUE Apr 14 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Tuesday</div><div class="day-date">Apr 14 · -4 days</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Z1–Z2 Easy</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike</div>
+            <div class="day-section-content">30–45 min Z1–Z2 @186–220W
+HR stays below 115. Spin out the legs.
+No effort, no pushing.</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">2700 kcal · 160P / 335C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w11tu')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w11tu')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w11tu">
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 90C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 85C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 55C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 80C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 25C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>2700 kcal · 160P / 335C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w11tu">
+            <pre>Foam roll 8–10 min.
+Hip mobility 8 min.
+Flexbeam 10 min if any tightness.
+Sleep 8–9h.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- WED Apr 15 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Wednesday</div><div class="day-date">Apr 15 · -3 days</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Z2 30min</span><span class="icon-chip chip-strength">Very Light</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike</div>
+            <div class="day-section-content">30 min Z2 @200–230W · HR ≤115
+Include 3×2min @270W to stay sharp</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🏋 Strength — Minimal (30 min)</div>
+            <div class="day-section-content">A: Trap bar DL 2×3 @ RPE 6 (light!)
+B: Bench 2×5 @ RPE 6
+C: Core: Pallof 2×8/side
+DONE. No fatigue accumulation.</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">3000 kcal · 170P / 400C / 80F
+(Slightly elevating carbs)</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w11we')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w11we')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w11we">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">25C</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">48P · 126C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 108C · 26F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 45C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">37P · 81C · 24F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 15C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>3000 kcal · 170P / 400C / 80F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w11we">
+            <pre>Massage gun glute/hamstring 6–8 min.
+Light hip flexor stretch.
+Flexbeam 10 min.
+Pack race bag tonight.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- THU Apr 16 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Thursday</div><div class="day-date">Apr 16 · -2 days</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Activation</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike — Activation <span class="mod-flag">MODIFIED</span></div>
+            <div class="day-section-content highlight-intensity">20 min easy warm-up @200W
+
+2×10 min @285–295W (90–95% FTP)
+  — feel sharp, not dying
+  5 min easy between
+
+15 min cool-down
+Total ~65 min</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition</div>
+            <div class="day-section-content">2700 kcal · 160P / 335C / 80F</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'meals-w11th')">Meals</button>
+            <button class="detail-tab" onclick="switchTab(event,'recovery-w11th')">Recovery</button>
+          </div>
+          <div class="detail-pane active" id="meals-w11th">
+            <div class="nut-row"><span class="nut-meal">Pre-AM</span><span class="nut-macros">30C</span></div>
+            <div class="nut-row"><span class="nut-meal">During ride</span><span class="nut-macros">40C light</span></div>
+            <div class="nut-row"><span class="nut-meal">Breakfast</span><span class="nut-macros">42P · 90C · 15F</span></div>
+            <div class="nut-row"><span class="nut-meal">Lunch</span><span class="nut-macros">40P · 85C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Snack</span><span class="nut-macros">25P · 55C · 10F</span></div>
+            <div class="nut-row"><span class="nut-meal">Dinner</span><span class="nut-macros">33P · 80C · 20F</span></div>
+            <div class="nut-row"><span class="nut-meal">Last meal</span><span class="nut-macros">20P · 25C · 5F</span></div>
+            <div class="nut-total"><span>Total</span><span>2700 kcal · 160P / 405C / 70F</span></div>
+          </div>
+          <div class="detail-pane" id="recovery-w11th">
+            <pre>After ride:
+• 10 min easy spin
+• Couch stretch 2×45s
+• Thoracic mobility
+• Flexbeam 10–15 min
+
+Tonight: Start carb-load dinner.
++150g extra carbs. Low fibre, low fat.
+Pasta, rice, bread = YES.
+Big salads, cruciferous veg = NO.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- FRI Apr 17 -->
+      <div class="day-card" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Friday</div><div class="day-date">Apr 17 · -1 day</div>
+          <div class="day-type-icons"><span class="icon-chip chip-bike">Pre-Race Opener</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🚴 Bike — Race Day Opener</div>
+            <div class="day-section-content highlight-intensity">20 min easy @190–220W
+
+2×5 min @255–265W (race middle pace)
+  3 min easy between
+
+10 min easy spin
+Total ~40 min</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">④ Race Prep Checklist</div>
+            <div class="day-section-content">✓ Bike checked & tyres inflated
+✓ Nutrition packed (90g/h plan)
+✓ Kit laid out
+✓ Chamois cream
+✓ Registration done
+✓ Early dinner 18:00–19:00
+✓ Bed by 21:30–22:00</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">🥗 Nutrition — Max Carb Load</div>
+            <div class="day-section-content highlight-intensity">~3500–4000 kcal · 160P / 600C / 60F
+Breakfast: 100g oats + banana + honey
+Lunch: 200g pasta + lean protein
+Snack: Bread + jam
+Dinner (light, 18:00): Rice + chicken/fish
+NO heavy fibre, fat, or new foods</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'recovery-w11fr')">Recovery & Sleep</button>
+          </div>
+          <div class="detail-pane active" id="recovery-w11fr">
+            <pre>Foam roll light 6–8 min.
+NSDR / box breathing 10 min.
+Lay out everything the night before.
+Alarm: Race start time minus 3 hours.
+Pre-race breakfast: 3h before start
+  — 150–200g carbs: rice cakes / porridge / banana
+  — Avoid eggs and fat if gut-sensitive
+  — 500ml water + electrolytes</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAT Apr 18 — RACE -->
+      <div class="day-card race-day" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Saturday 🏁</div><div class="day-date">Apr 18 · RACE DAY</div>
+          <div class="day-type-icons"><span class="icon-chip chip-race">DIRTY JUTLAND 200km</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🎯 Pacing Strategy</div>
+            <div class="day-section-content highlight-intensity">Km 0–50: HR ≤125 · Power 195–215W
+  Stay conservative. Everyone goes too hard.
+Km 50–130: HR 125–132 · Power 215–240W
+  Settle into race rhythm. Eat every 20–25 min.
+Km 130–170: HR allow to 137 · Power up to 255W
+  Controlled effort, respond to terrain.
+Km 170–200: Give what's left
+  HR can go above 140, push to finish.</div>
+          </div>
+          <div class="day-section">
+            <div class="day-section-label">⛽ Race Fueling Plan</div>
+            <div class="day-section-content">90g carb/h throughout entire race
+Sodium 700–1000mg/h (add electrolyte tabs)
+Start fueling at km 15 — NOT when hungry
+Drink 500–750ml/h
+If gut upset: reduce to 60g/h and recover</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'raceday-detail')">Full Race Plan</button>
+            <button class="detail-tab" onclick="switchTab(event,'raceday-nut')">Nutrition Detail</button>
+          </div>
+          <div class="detail-pane active" id="raceday-detail">
+            <pre>PRE-RACE (T-3h):
+• 200g oats/rice + banana + honey + coffee
+• Creatine 5g + electrolytes
+• Caffeine: 3mg/kg = 240mg (time for peak at race start)
+
+AT START LINE:
+• 1 gel + 250ml electrolyte drink 15 min before gun
+
+RACE EXECUTION:
+• Every 20–25 min: eat something (gel/chew/bar)
+• Every hour: 2 electrolyte tabs or 1 sodium sachet
+• If climbing: shift to easier gear BEFORE HR spikes
+• On descents: eat and drink — not on climbs
+
+WHEN IT GETS HARD (km 140+):
+• Reduce power 5–10W, eat immediately
+• If cramping: sodium + soft pedalling 5 min
+• If bonking: 2 gels back to back (60g fast carbs)
+
+MENTAL:
+• Ride your own race for first 80km
+• The race starts at km 130. Everything before is setup.</pre>
+          </div>
+          <div class="detail-pane" id="raceday-nut">
+            <pre>TARGET: 4200 kcal · 160P / 721C / 75F
+
+Per hour fueling (90g carb):
+Option A: 2 gels (44g) + 1 bar (50g) = 94g ✓
+Option B: 3 gels (66g) + 1 chew pack (25g) = 91g ✓
+Option C: Bottle with maltodextrin 80g + 1 gel
+
+POST-RACE:
+• 50g fast carbs + 30–40g protein within 20 min
+• Keep glucose/protein intake hourly for 3h after
+• Electrolytes aggressively for 24h</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUN Apr 19 -->
+      <div class="day-card rest-day" onclick="toggleDay(this)">
+        <div class="day-header">
+          <div class="day-name">Sunday</div><div class="day-date">Apr 19 · POST-RACE</div>
+          <div class="day-type-icons"><span class="icon-chip chip-rest">Recovery</span></div>
+        </div>
+        <div class="day-body">
+          <div class="day-section">
+            <div class="day-section-label">🎉 You Did It</div>
+            <div class="day-section-content">Full rest. Easy walk only.
+No training decisions for 48h.
+Eat what you want.
+Celebrate.</div>
+          </div>
+        </div>
+        <div class="day-detail">
+          <div class="detail-tabs">
+            <button class="detail-tab active" onclick="switchTab(event,'postrace')">Recovery Protocol</button>
+          </div>
+          <div class="detail-pane active" id="postrace">
+            <pre>48–72h post-race:
+• Prioritize sleep and food
+• Easy walks only (no cycling)
+• Anti-inflammatory foods: berries, salmon, turmeric
+• Continue creatine, omega-3, magnesium
+• Ice/contrast shower for legs if sore
+• Flexbeam on any specific niggles
+
+Week 1 post-race: No structured training.
+Week 2: Return to Z2 only if motivated.
+Do not rush. A 200km gravel race is significant physiological stress.</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SUPPLEMENTS ══════════ -->
+  <section id="supplements" class="summary-section">
+    <h2><span>💊</span> Daily Supplement Protocol</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px;">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--cyan); margin-bottom:10px;">Every Day — AM</div>
+        <ul style="list-style:none; font-size:13px; color:var(--text); line-height:2;">
+          <li>🔵 Creatine monohydrate <b>5g</b></li>
+          <li>🟠 Omega-3 <b>2g EPA/DHA</b> with meal</li>
+          <li>☀️ Vitamin D3 <b>2000 IU</b></li>
+          <li>🔴 Beta-alanine <b>1.6g</b></li>
+          <li>🟢 Tongkat Ali <b>200–400mg</b> (5 on / 2 off)</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px;">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--purple); margin-bottom:10px;">Every Day — PM</div>
+        <ul style="list-style:none; font-size:13px; color:var(--text); line-height:2;">
+          <li>🌙 Magnesium glycinate <b>300–400mg</b></li>
+          <li>🌙 Glycine <b>3g</b></li>
+          <li>🌙 Taurine <b>1–2g</b></li>
+          <li>🌙 Inositol <b>2g</b></li>
+          <li>🌙 L-theanine <b>200mg</b></li>
+          <li>🔴 Beta-alanine <b>1.6g</b></li>
+        </ul>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px;">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:10px;">Pre-Session (Hard days only)</div>
+        <ul style="list-style:none; font-size:13px; color:var(--text); line-height:2;">
+          <li>☕ Caffeine <b>100–200mg</b> (30–45' pre)</li>
+          <li>🧠 L-theanine <b>100mg</b> (paired with caffeine)</li>
+          <li>⚡ Only if sleep was good</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px;">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--yellow); margin-bottom:10px;">Race Day Protocol</div>
+        <ul style="list-style:none; font-size:13px; color:var(--text); line-height:2;">
+          <li>☕ Caffeine <b>240mg</b> (3mg/kg · T-60min)</li>
+          <li>🔵 Creatine <b>5g</b> pre-race</li>
+          <li>⚡ Electrolytes <b>from start</b></li>
+          <li>🍌 Carbs T-30min: <b>1 gel</b></li>
+          <li>🚫 No new supplements race day</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ RACE DAY DEEP DIVE ══════════ -->
+  <section id="raceday" class="summary-section">
+    <h2><span>🏁</span> Race Day — Dirty Jutland April 18</h2>
+    <div class="race-card">
+      <h3>200km · Target: Strong finish · Pacing HR-governed</h3>
+      <div class="race-sections">
+        <div class="race-section">
+          <h4>Pacing by Section</h4>
+          <ul>
+            <li><b>Km 0–50:</b> 195–215W · HR ≤125</li>
+            <li><b>Km 50–130:</b> 215–240W · HR ≤132</li>
+            <li><b>Km 130–170:</b> up to 255W · HR ≤137</li>
+            <li><b>Km 170–200:</b> Race to finish</li>
+          </ul>
+        </div>
+        <div class="race-section">
+          <h4>Hourly Fueling</h4>
+          <ul>
+            <li>90g carb/h from km 15</li>
+            <li>700–1000mg sodium/h</li>
+            <li>500–750ml fluid/h</li>
+            <li>Eat on descents / flat — not climbs</li>
+            <li>2 gels back-to-back if bonking</li>
+          </ul>
+        </div>
+        <div class="race-section">
+          <h4>Key Warnings</h4>
+          <ul>
+            <li>First 50km feels easy — KEEP IT</li>
+            <li>HR creeping above 130 early = BACK OFF</li>
+            <li>Gut issues → drop to 60g/h and recover</li>
+            <li>Cramping → sodium + soft pedal 5 min</li>
+          </ul>
+        </div>
+        <div class="race-section">
+          <h4>Injury Management</h4>
+          <ul>
+            <li>Hamstring: high saddle position check pre-race</li>
+            <li>Knee: avoid mashing — keep cadence 85–95rpm</li>
+            <li>If knee flares at km 80: reduce power 15W, keep cadence up</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- .main -->
+
+<button class="scrolltop" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Active nav on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav a[href^="#"]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+    document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 300);
+  });
+
+  // Toggle day detail
+  function toggleDay(card) {
+    const detail = card.querySelector('.day-detail');
+    if (detail) detail.classList.toggle('open');
+  }
+
+  // Tab switching inside day detail
+  function switchTab(event, paneId) {
+    event.stopPropagation();
+    const btn = event.target;
+    const detail = btn.closest('.day-detail');
+    detail.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+    detail.querySelectorAll('.detail-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const pane = document.getElementById(paneId);
+    if (pane) pane.classList.add('active');
+  }
+
+  // Race countdown + progress
+  function updateCountdown() {
+    const race = new Date('2026-04-18');
+    const today = new Date('2026-03-27');
+    const total = 22;
+    const diff = Math.ceil((race - today) / (1000*60*60*24));
+    document.getElementById('countdown').textContent = diff + ' days to race · April 18';
+    const pct = ((total - diff) / total * 100).toFixed(1);
+    document.getElementById('raceProgress').style.width = pct + '%';
+  }
+  updateCountdown();
+</script>
+</body>
+</html>

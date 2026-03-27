@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Highlights: The Science of Farts — Gut Insiders</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --card: #22263a;
+      --accent: #6c63ff;
+      --accent2: #ff6584;
+      --accent3: #43d97b;
+      --accent4: #f9c74f;
+      --text: #e2e8f0;
+      --muted: #8892a4;
+      --border: #2e3347;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding: 2rem;
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    header .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .75rem;
+      border-radius: 99px;
+      margin-bottom: .75rem;
+    }
+    header h1 { font-size: 1.9rem; font-weight: 800; margin-bottom: .5rem; }
+    header .meta { color: var(--muted); font-size: .9rem; }
+    header .meta a { color: var(--accent); text-decoration: none; }
+    header .meta a:hover { text-decoration: underline; }
+
+    /* Summary box */
+    .summary {
+      background: var(--card);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .summary p { font-size: .97rem; color: var(--text); }
+
+    /* Sections */
+    section { margin-bottom: 2rem; }
+    section h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    section h2 .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* Cards */
+    .cards { display: grid; gap: 1rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem 1.3rem;
+    }
+    .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
+    .card p, .card li { font-size: .93rem; color: #c4cad6; }
+    .card ul { padding-left: 1.2rem; }
+    .card ul li { margin-bottom: .2rem; }
+
+    /* Ranking table */
+    .ranking { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    .ranking th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 600;
+      padding: .5rem .8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .ranking td { padding: .55rem .8rem; border-bottom: 1px solid var(--border); }
+    .ranking tr:last-child td { border-bottom: none; }
+    .rank-num {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--accent);
+      width: 36px;
+    }
+    .tag {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .15rem .55rem;
+      border-radius: 99px;
+      margin-left: .4rem;
+      vertical-align: middle;
+    }
+    .tag-stink { background: #3b1f2e; color: var(--accent2); }
+    .tag-volume { background: #1e3a2b; color: var(--accent3); }
+    .tag-both { background: #2e2a10; color: var(--accent4); }
+
+    /* Top-10 list */
+    .fix-list { counter-reset: fixes; list-style: none; padding: 0; display: grid; gap: .7rem; }
+    .fix-list li {
+      counter-increment: fixes;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .8rem 1rem;
+      font-size: .93rem;
+    }
+    .fix-list li::before {
+      content: counter(fixes);
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .8rem;
+      flex-shrink: 0;
+    }
+
+    /* Red flags */
+    .flags { display: grid; gap: .6rem; }
+    .flag {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      background: #22161e;
+      border: 1px solid #4a1f2e;
+      border-radius: 10px;
+      padding: .75rem 1rem;
+      font-size: .92rem;
+      color: #f4b8c8;
+    }
+    .flag-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+    /* Quote */
+    blockquote {
+      border-left: 3px solid var(--accent4);
+      background: var(--card);
+      border-radius: 0 10px 10px 0;
+      padding: .9rem 1.2rem;
+      margin: 0;
+      font-style: italic;
+      color: #d4b96a;
+      font-size: .95rem;
+    }
+
+    /* Key fact pills */
+    .facts { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .fact-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .55rem 1rem;
+      font-size: .88rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .fact-pill .icon { font-size: 1rem; }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .82rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">Video Highlights</div>
+    <h1>The Science of Farts 💨</h1>
+    <p class="meta">
+      Gut Insiders Podcast &nbsp;|&nbsp;
+      <a href="https://www.youtube.com/watch?v=QIlpJh_0ESY" target="_blank">
+        youtube.com/watch?v=QIlpJh_0ESY
+      </a>
+      &nbsp;|&nbsp; Hosts: <strong>Will</strong> (gut microbiome expert) &amp; <strong>Chuck</strong>
+    </p>
+  </header>
+
+  <!-- TL;DR -->
+  <div class="summary">
+    <p>
+      A deep-dive into the biology, chemistry, and microbiome science behind flatulence. The episode
+      covers what farts are made of, why they smell, which foods trigger the most gas, a surprising
+      study on who farts smellier, red-flag symptoms to watch for, and a practical 10-step plan to
+      reduce gas and odour.
+    </p>
+  </div>
+
+  <!-- Key Facts -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent)"></span>Key Facts at a Glance</h2>
+    <div class="facts">
+      <div class="fact-pill"><span class="icon">💧</span> ~99% of fart gas is odourless (N₂, H₂, CO₂, O₂, CH₄)</div>
+      <div class="fact-pill"><span class="icon">🦨</span> &lt;1% causes all the smell — sulfur compounds</div>
+      <div class="fact-pill"><span class="icon">🐕</span> Humans detect sulfur at parts-per-billion</div>
+      <div class="fact-pill"><span class="icon">📊</span> Normal: 10–20 farts per day</div>
+      <div class="fact-pill"><span class="icon">🔬</span> 1998 study (Journal <em>Gut</em>) — women have smellier farts</div>
+      <div class="fact-pill"><span class="icon">🧬</span> Stinky farts = microbiome fermenting too much protein</div>
+      <div class="fact-pill"><span class="icon">🚶</span> A post-meal "fart walk" dramatically reduces bloating</div>
+    </div>
+  </section>
+
+  <!-- Chemistry of Smell -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent2)"></span>The Chemistry of Fart Smell</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>🥚 Hydrogen Sulfide (H₂S)</h3>
+        <p>The classic <em>rotten egg</em> smell. The dominant stinker and the most concentrated compound found in women's farts in the 1998 study. Produced from sulfur-based amino acids in meat and eggs.</p>
+      </div>
+      <div class="card">
+        <h3>🧄 Methanethiol</h3>
+        <p>A <em>garlicky / cabbagey</em> smell. Sulfur-based compound primarily produced when consuming garlic and onions. Not as intense as H₂S but distinctly pungent.</p>
+      </div>
+      <div class="card">
+        <h3>🥦 Dimethyl Sulfide</h3>
+        <p>A milder <em>cooked vegetable</em> smell. Also sulfur-based. Produced by cruciferous vegetables (broccoli, cabbage, Brussels sprouts). All three belong to the <strong>volatile sulfur compound</strong> family.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The 1998 Study -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent4)"></span>The Fart Study (1998, Journal <em>Gut</em>)</h2>
+    <div class="card">
+      <ul>
+        <li>Published in <em>Gut</em> — the leading gastroenterology journal in Europe.</li>
+        <li>16 participants; two trained "fart judges" scored smell intensity on a <strong>0–8 scale</strong> by sniffing collected samples.</li>
+        <li><strong>Finding:</strong> Women's farts score higher for odour, driven by higher concentrations of hydrogen sulfide.</li>
+        <li>Men are more likely to pass gas openly; women are better at concealing it.</li>
+        <li>Limitation: predates modern microbiome sequencing — no microbiome analysis was done.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Fart Fuel Power Rankings -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent3)"></span>Fart Fuel Power Rankings</h2>
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <table class="ranking">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Food</th>
+            <th>Effect</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rank-num">1</td>
+            <td><strong>Eggs &amp; Red Meat</strong> <span class="tag tag-stink">STINK</span></td>
+            <td>High odour</td>
+            <td>Dense sulfur-based amino acids → H₂S production + sulfur-reducing bacteria</td>
+          </tr>
+          <tr>
+            <td class="rank-num">2</td>
+            <td><strong>Garlic &amp; Onions</strong> <span class="tag tag-stink">STINK</span></td>
+            <td>Pungent odour</td>
+            <td>Naturally sulfur-containing → fuels methanethiol &amp; dimethyl sulfide</td>
+          </tr>
+          <tr>
+            <td class="rank-num">3</td>
+            <td><strong>Cruciferous Veg</strong> <span class="tag tag-stink">STINK</span></td>
+            <td>Mixed odour</td>
+            <td>Glucosinolates are sulfur-containing → volatile sulfur compounds</td>
+          </tr>
+          <tr>
+            <td class="rank-num">4</td>
+            <td><strong>Beans, Legumes &amp; Lentils</strong> <span class="tag tag-volume">VOLUME</span></td>
+            <td>High volume, low odour</td>
+            <td>Rich in fibre, resistant starch, galacto-oligosaccharides → fermentation</td>
+          </tr>
+          <tr>
+            <td class="rank-num">5</td>
+            <td><strong>Wheat, Barley &amp; Rye</strong> <span class="tag tag-volume">VOLUME</span></td>
+            <td>Volume, low odour</td>
+            <td>Fibre + resistant starch + fructans → fermentable substrates</td>
+          </tr>
+          <tr>
+            <td class="rank-num">6</td>
+            <td><strong>Fruit (apples, pears)</strong> <span class="tag tag-volume">VOLUME</span></td>
+            <td>Volume, low odour</td>
+            <td>High fibre + fructose → fermentation &amp; rapid gut motility</td>
+          </tr>
+          <tr>
+            <td class="rank-num">★</td>
+            <td><strong>Sugar Alcohols</strong> <span class="tag tag-both">BOTH</span></td>
+            <td>Gas + bloating</td>
+            <td>Not absorbed; fermented by gut microbes; draw water into intestines (sorbitol, xylitol, erythritol, maltitol)</td>
+          </tr>
+          <tr>
+            <td class="rank-num">★</td>
+            <td><strong>Dairy (lactose)</strong> <span class="tag tag-both">BOTH</span></td>
+            <td>Gas + bloating</td>
+            <td>Lactose intolerance common; fermented producing gas and loose stool</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <blockquote>"Beans are the brass band of farting. They bring the volume, but they don't bring the violence." — Will</blockquote>
+
+    <br/>
+    <div class="card">
+      <h3>💥 The Ultimate Stink Combo</h3>
+      <p>Pair <strong>sulfur-based</strong> foods with <strong>fermentable</strong> foods for maximum effect. Examples: <em>egg salad sandwich + side of garlic hummus</em>, or <em>Brussels sprouts + bacon</em>.</p>
+    </div>
+  </section>
+
+  <!-- Microbiome Connection -->
+  <section>
+    <h2><span class="dot" style="background:#a78bfa"></span>The Microbiome Connection</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Why stinky farts are a health signal</h3>
+        <p>Stinky farts indicate the gut microbiome is fermenting <strong>too much protein</strong> (instead of fibre). This produces toxic compounds like <strong>ammonia</strong>, associated with increased colorectal cancer risk. Increasing fibre shifts the microbiome toward producing anti-inflammatory <strong>short-chain fatty acids (SCFAs)</strong>.</p>
+      </div>
+      <div class="card">
+        <h3>38TERA Daily Microbiome Nutrition Study (15 days)</h3>
+        <ul>
+          <li><strong>Day 3:</strong> Increased short-chain fatty acids detected</li>
+          <li><strong>Day 5:</strong> Metabolic switch — microbiome flips from protein fermentation to fibre fermentation; ammonia levels drop</li>
+          <li><strong>Day 15:</strong> Emergence of beneficial bacteria (Akkermansia); reduced inflammatory markers</li>
+          <li>Same daily dose produced increasing SCFA levels — efficiency improves with consistency</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Beer &amp; Alcohol</h3>
+        <p>Post-drinking rancid gas is a sign of <strong>microbiome injury</strong> from alcohol. The alcohol disrupts microbial balance, shifting fermentation back toward protein and producing more sulfur compounds.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Red Flags -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent2)"></span>Red Flags — When to See a Doctor</h2>
+    <div class="flags">
+      <div class="flag"><span class="flag-icon">🔴</span> Sudden, unexplained change in smell or frequency (no diet change)</div>
+      <div class="flag"><span class="flag-icon">🔴</span> Persistent abdominal cramps, bloating, or discomfort</div>
+      <div class="flag"><span class="flag-icon">🔴</span> Chronic diarrhoea or constipation</div>
+      <div class="flag"><span class="flag-icon">🔴</span> Blood in stool</div>
+      <div class="flag"><span class="flag-icon">🔴</span> Unexplained anaemia or iron deficiency</div>
+      <div class="flag"><span class="flag-icon">🔴</span> Unexplained weight loss</div>
+      <div class="flag"><span class="flag-icon">🔴</span> Fever accompanying GI symptoms</div>
+    </div>
+  </section>
+
+  <!-- Top 10 Fixes -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent3)"></span>Get Right With Your Gas — Top 10 Fixes</h2>
+    <ol class="fix-list">
+      <li><strong>Increase fibre slowly.</strong> Your microbiome needs time to adapt. Going straight to a full bean feast causes excessive gas. Build up gradually and let the gut adjust.</li>
+      <li><strong>Cut back on sulfur-rich foods</strong> (meat, eggs, garlic, onions) temporarily if your farts are chronically malodorous. These are the primary H₂S drivers.</li>
+      <li><strong>Reduce sugar alcohols.</strong> Check ingredient labels for sorbitol, xylitol, erythritol, maltitol. These are not absorbed, get fermented, and can also trigger diarrhoea.</li>
+      <li><strong>Identify your FODMAP triggers.</strong> Fructose, lactose, galacto-oligosaccharides (beans), fructans (wheat, garlic, onions), and sugar alcohols are all FODMAPs. Work with a dietitian to pinpoint your specific issue.</li>
+      <li><strong>Feed your good microbes.</strong> Prioritise dietary fibre and resistant starch. Consider targeted microbiome supplements to shift from protein fermentation to fibre fermentation.</li>
+      <li><strong>Slow down when you eat.</strong> Eating too fast leads to sloppy digestion. Slower eating reduces bloating, gas, and even improves metabolism.</li>
+      <li><strong>Skip gum and carbonated drinks.</strong> Both cause you to swallow excess air, which must exit one way or another — either as a belch or from the other end.</li>
+      <li><strong>Move your body after meals.</strong> Even a short walk ("fart walk") can dramatically reduce gas and bloating by stimulating gut motility.</li>
+      <li><strong>Try digestive enzyme supplements</strong> or products like "Discreet" pads that muffle sound and filter odour via activated charcoal — useful situational tools.</li>
+      <li><strong>Consider dairy.</strong> If you suffer with ongoing bloating and gas, trial removing dairy for a week to assess your lactose tolerance level.</li>
+    </ol>
+  </section>
+
+  <!-- Fun Moment -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent4)"></span>Notable Moment</h2>
+    <blockquote>
+      "You get us to 2 million [YouTube subscribers], my friends… I will readily volunteer this sniffer
+      to go directly into some fart bags and judge it. I will judge it like it's the Olympics in a
+      figure skating contest." — Will, pledging to be a professional fart judge
+    </blockquote>
+  </section>
+
+  <footer>
+    Transcript generated with <strong>youtube-transcript-api</strong> &nbsp;|&nbsp; Highlights compiled by GitHub Copilot
+  </footer>
+
+</div>
+</body>
+</html>
