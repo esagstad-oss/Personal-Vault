@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Highlights: Why Everything You Know About Anti-Nutrients is Wrong</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b27;
+      --card: #1e2535;
+      --accent: #6c63ff;
+      --accent2: #ff6584;
+      --accent3: #43d97b;
+      --accent4: #f9c74f;
+      --accent5: #56cfe1;
+      --text: #e2e8f0;
+      --muted: #7a8599;
+      --border: #2a3144;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding: 2rem;
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .73rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .8rem;
+      border-radius: 99px;
+      margin-bottom: .75rem;
+    }
+    header h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: .4rem; }
+    header .sub { color: var(--accent4); font-size: .95rem; font-weight: 600; margin-bottom: .4rem; }
+    header .meta { color: var(--muted); font-size: .85rem; }
+    header .meta a { color: var(--accent); text-decoration: none; }
+    header .meta a:hover { text-decoration: underline; }
+
+    .summary {
+      background: var(--card);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2rem;
+      font-size: .96rem;
+    }
+
+    section { margin-bottom: 2.2rem; }
+    section h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+    .cards { display: grid; gap: .9rem; }
+    .cards.two { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+    }
+    .card h3 { font-size: .97rem; font-weight: 700; margin-bottom: .4rem; }
+    .card p, .card li { font-size: .9rem; color: #b8c0cc; }
+    .card ul { padding-left: 1.2rem; }
+    .card ul li { margin-bottom: .2rem; }
+
+    .facts { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 0; }
+    .fact-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .5rem .9rem;
+      font-size: .86rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    /* Anti-nutrient comparison table */
+    .an-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .an-table th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 600;
+      padding: .5rem .8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .an-table td { padding: .55rem .8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .an-table tr:last-child td { border-bottom: none; }
+    .pill {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .2rem .55rem;
+      border-radius: 99px;
+    }
+    .pill-red { background: #3b1020; color: #ff6584; }
+    .pill-green { background: #0f2d1a; color: #43d97b; }
+    .pill-yellow { background: #2d230a; color: #f9c74f; }
+
+    /* Pendulum divider */
+    .pendulum {
+      display: flex;
+      gap: 1rem;
+      align-items: stretch;
+      margin-bottom: 1rem;
+    }
+    .pendulum-side {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+    }
+    .pendulum-vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--accent2);
+      min-width: 36px;
+      flex-shrink: 0;
+    }
+    .pendulum-side h3 { font-size: .9rem; font-weight: 700; margin-bottom: .4rem; }
+    .pendulum-side p { font-size: .85rem; color: #b8c0cc; }
+
+    /* Prep method cards */
+    .prep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: .8rem;
+    }
+    .prep-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: .9rem 1rem;
+      text-align: center;
+    }
+    .prep-card .icon { font-size: 1.5rem; display: block; margin-bottom: .35rem; }
+    .prep-card h3 { font-size: .88rem; font-weight: 700; margin-bottom: .3rem; }
+    .prep-card p { font-size: .8rem; color: var(--muted); }
+
+    /* Stacking example */
+    .stack {
+      background: #2a1220;
+      border: 1px solid #4a1f30;
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      font-size: .9rem;
+    }
+    .stack h3 { font-size: .93rem; font-weight: 700; color: var(--accent2); margin-bottom: .5rem; }
+    .stack-items { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .7rem; }
+    .stack-item {
+      background: #3b1a25;
+      border: 1px solid #5a2535;
+      border-radius: 8px;
+      padding: .35rem .75rem;
+      font-size: .82rem;
+      color: #f4b8c8;
+    }
+    .stack p { font-size: .88rem; color: #e0a0b0; }
+
+    /* Tips list */
+    .tips { counter-reset: tips; list-style: none; padding: 0; display: grid; gap: .7rem; }
+    .tips li {
+      counter-increment: tips;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .8rem 1rem;
+      font-size: .91rem;
+    }
+    .tips li::before {
+      content: counter(tips);
+      background: var(--accent3);
+      color: #0d1117;
+      font-weight: 800;
+      min-width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .78rem;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+
+    blockquote {
+      border-left: 3px solid var(--accent4);
+      background: var(--card);
+      border-radius: 0 10px 10px 0;
+      padding: .85rem 1.1rem;
+      font-style: italic;
+      color: #d4b96a;
+      font-size: .92rem;
+      margin-bottom: .7rem;
+    }
+    blockquote cite { display: block; margin-top: .3rem; font-style: normal; font-size: .78rem; color: var(--muted); }
+
+    .callout {
+      background: #12231a;
+      border: 1px solid #1e4030;
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      font-size: .93rem;
+      color: #7de8a8;
+    }
+    .callout strong { color: var(--accent3); }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .8rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">Video Highlights</div>
+    <h1>Why Everything You Know About "Anti-Nutrients" is Wrong</h1>
+    <p class="sub">The missing piece both sides of the debate are ignoring</p>
+    <p class="meta">
+      <a href="https://www.youtube.com/watch?v=KdQ0i82aYN8" target="_blank">youtube.com/watch?v=KdQ0i82aYN8</a>
+      &nbsp;|&nbsp; Duration: ~11 min
+    </p>
+  </header>
+
+  <div class="summary">
+    Anti-nutrients (lectins, phytates, oxalates) are real — but the debate around them is missing a critical piece: <strong>context</strong>. Traditional cultures ate massive amounts of these foods for thousands of years without problems, because they always prepared them in ways that neutralised most of the risk. Modern eating removed those preparation steps and stacked high-anti-nutrient foods daily without variety — <em>that</em> is what changed. The answer isn't to eliminate entire food groups; it's to rediscover how those foods were always meant to be eaten.
+  </div>
+
+  <!-- Key facts -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent)"></span>Key Facts at a Glance</h2>
+    <div class="facts">
+      <div class="fact-pill">✅ Anti-nutrients are real — not made up</div>
+      <div class="fact-pill">🧂 Phytates bind zinc, iron, magnesium</div>
+      <div class="fact-pill">🔬 Phytase enzyme (in grains) breaks down phytic acid when activated</div>
+      <div class="fact-pill">☣️ Phytic acid also binds toxic metals (mercury, lead, cadmium) — protective in small doses</div>
+      <div class="fact-pill">🍞 Loetschental people (1930s): rye-heavy diet, excellent health, low tooth decay</div>
+      <div class="fact-pill">⚗️ Soaking/fermenting can dramatically reduce phytate levels</div>
+      <div class="fact-pill">🔁 Hormesis: small stress from anti-nutrients may train the body to be more resilient</div>
+      <div class="fact-pill">📉 95% of cases: the problem is the system, not one molecule</div>
+    </div>
+  </section>
+
+  <!-- The debate -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent2)"></span>The Two Extreme Camps — Both Partly Right, Both Missing Nuance</h2>
+    <div class="pendulum">
+      <div class="pendulum-side">
+        <h3>🥩 Carnivore / Paleo camp</h3>
+        <p>Lectins, phytates, oxalates in grains and legumes are dangerous. Don't eat oats, beans, or spinach. Humans weren't designed to process them.</p>
+        <br/>
+        <p style="color:#ff6584; font-size:.82rem;"><strong>What they get right:</strong> the negative effects are real and measurable.<br/><strong>What they miss:</strong> preparation, dose, and context change everything.</p>
+      </div>
+      <div class="pendulum-vs">VS</div>
+      <div class="pendulum-side">
+        <h3>🥗 Vegan / Vegetarian camp</h3>
+        <p>These have been staple foods for thousands of years globally. Traditional cultures ate huge amounts with no problems.</p>
+        <br/>
+        <p style="color:#43d97b; font-size:.82rem;"><strong>What they get right:</strong> humans evolved alongside these compounds.<br/><strong>What they miss:</strong> traditional cultures always used preparation methods we've abandoned.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>The missing piece:</strong> It's not <em>what</em> you eat — it's <em>how</em> you eat it, and how often. Both sides frame the debate in extremes and miss the nuance that actually matters for health.
+    </div>
+  </section>
+
+  <!-- The 3 main anti-nutrients -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent5)"></span>The Main Anti-Nutrients</h2>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="an-table">
+        <thead>
+          <tr>
+            <th>Compound</th>
+            <th>Found In</th>
+            <th>Effect</th>
+            <th>Reduced By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Phytic Acid (Phytates)</strong></td>
+            <td>Oats, grains, legumes, nuts, seeds</td>
+            <td>Binds zinc, iron, magnesium + heavy metals</td>
+            <td>Soaking, fermenting (activates phytase enzyme)</td>
+          </tr>
+          <tr>
+            <td><strong>Lectins</strong></td>
+            <td>Legumes, grains (esp. raw)</td>
+            <td>Can irritate gut lining, interfere with digestion</td>
+            <td>Prolonged cooking, soaking, sprouting</td>
+          </tr>
+          <tr>
+            <td><strong>Oxalates</strong></td>
+            <td>Spinach, leafy greens, nuts, dark chocolate</td>
+            <td>High raw intake can cause joint problems, kidney stones</td>
+            <td>Cooking, pairing with calcium-rich foods, variety</td>
+          </tr>
+          <tr>
+            <td><strong>Enzyme inhibitors</strong></td>
+            <td>Rye, other grains</td>
+            <td>Slow digestion, reduce nutrient absorption</td>
+            <td>Slow cooking, fermentation (sourdough)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- The Stacking Problem -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent2)"></span>The "Stacking Effect" — How Modern Diets Made This Worse</h2>
+    <div class="stack">
+      <h3>A typical "healthy" modern daily meal plan — every single day:</h3>
+      <div class="stack-items">
+        <div class="stack-item">🥣 Raw oats (water/milk) — breakfast</div>
+        <div class="stack-item">🥜 Raw nuts — morning snack</div>
+        <div class="stack-item">🍫 Nut butter + dark chocolate — afternoon</div>
+        <div class="stack-item">🥬 Spinach smoothie — daily</div>
+      </div>
+      <p>All technically "healthy" foods. But repeated daily for years without preparation = <strong>chronic cumulative anti-nutrient exposure</strong>. If your gut is sensitive or you already have mineral deficiencies, this is where symptoms appear — not because these foods are toxic, but because the dose accumulated without the traditional buffers.</p>
+    </div>
+    <br/>
+    <div class="cards two">
+      <div class="card">
+        <h3>🔁 Modern diet amplifiers</h3>
+        <ul>
+          <li>Same foods every single day (no seasonal variety)</li>
+          <li>No soaking, fermentation, or slow preparation</li>
+          <li>Raw consumption of foods that were always cooked or prepared</li>
+          <li>Instant oats instead of slow-cooked porridge</li>
+          <li>Quick yeast bread instead of sourdough</li>
+          <li>Removed buffering foods (e.g. calcium sources alongside grains)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>⚠️ When anti-nutrient reduction makes sense</h3>
+        <ul>
+          <li>Already <strong>low in zinc or magnesium</strong> — high phytate intake worsens deficiencies</li>
+          <li><strong>Inflamed gut</strong> — certain compounds will irritate it further</li>
+          <li>Eating <strong>large amounts of raw spinach daily</strong> — oxalate load can reach problematic levels</li>
+          <li>Anyone with a <strong>very sensitive gut</strong> and repetitive high-exposure diet</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Traditional prep methods -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent3)"></span>Traditional Preparation Methods — The Forgotten Protective Layer</h2>
+    <p style="color:var(--muted); font-size:.88rem; margin-bottom:.9rem;">No matter where you look historically, high-anti-nutrient foods were always prepared in one of these ways. None of it was science-based — it was accumulated cooking wisdom passed through generations.</p>
+    <div class="prep-grid">
+      <div class="prep-card">
+        <span class="icon">💧</span>
+        <h3>Soaking</h3>
+        <p>Overnight soak activates phytase in grains/legumes, breaking down phytic acid. Beans soaked then simmered for hours.</p>
+      </div>
+      <div class="prep-card">
+        <span class="icon">🦠</span>
+        <h3>Fermenting</h3>
+        <p>Microbes further degrade phytates and lectins. Sourdough vs quick bread — not even in the same universe nutritionally.</p>
+      </div>
+      <div class="prep-card">
+        <span class="icon">🌱</span>
+        <h3>Sprouting</h3>
+        <p>Activates enzymes that break down anti-nutrients in seeds and grains. Increases bioavailability of minerals.</p>
+      </div>
+      <div class="prep-card">
+        <span class="icon">🔥</span>
+        <h3>Slow Cooking</h3>
+        <p>Long heat exposure degrades lectins and enzyme inhibitors. Slow porridge vs instant oats = completely different food.</p>
+      </div>
+      <div class="prep-card">
+        <span class="icon">🥩</span>
+        <h3>Food Pairing</h3>
+        <p>Calcium (e.g. bone broth) buffers phytates in bread. Mineral-rich accompaniments offset anti-nutrient binding effects.</p>
+      </div>
+      <div class="prep-card">
+        <span class="icon">🌿</span>
+        <h3>Seasonal Variety</h3>
+        <p>Traditional diets rotated with availability — avoiding the chronic daily stacking of the same high-anti-nutrient foods year-round.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hormesis -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent4)"></span>Hormesis — Small Stress, Big Benefit</h2>
+    <div class="cards two">
+      <div class="card">
+        <h3>🧬 The body evolved alongside these compounds</h3>
+        <p>Humans did not evolve in a sterile food environment. We evolved eating plants with defence compounds. The body <em>expects</em> some exposure. Small amounts of anti-nutrients can act as mild stressors that train the system to become more resilient — similar to exercise stress driving adaptation.</p>
+      </div>
+      <div class="card">
+        <h3>🛡️ Phytic acid as a protector</h3>
+        <p>Phytic acid doesn't only bind essential minerals — it also binds <strong>toxic heavy metals</strong>: mercury, lead, and cadmium. In small amounts it helps protect the body against these toxins. What the body didn't evolve for is <em>constant</em> unprocessed exposure without traditional buffers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Practical takeaways -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent3)"></span>Practical Takeaways</h2>
+    <ol class="tips">
+      <li><strong>Soak your oats overnight</strong> before eating. Makes them dramatically easier to digest and activates phytase to break down phytic acid. Raw oats with cold water every morning is not how oats were meant to be eaten.</li>
+      <li><strong>Switch to real sourdough bread.</strong> Fermented sourdough and quick supermarket bread are completely different foods in terms of anti-nutrient load and digestibility. Not even the same universe.</li>
+      <li><strong>Soak beans overnight, then cook them long.</strong> Traditional preparation — not a marketing claim. It genuinely changes the biochemical state of the food.</li>
+      <li><strong>Don't "stack" high-anti-nutrient foods daily without variety.</strong> Raw oats + raw nuts + nut butter + spinach smoothie every single day is the pattern that accumulates into problems — not any one of those foods in isolation.</li>
+      <li><strong>Cook leafy greens (spinach especially) rather than eating them raw in bulk.</strong> Raw spinach daily in large amounts can push oxalate load into problematic territory, particularly if you have a sensitive gut.</li>
+      <li><strong>Pair foods strategically.</strong> Calcium-rich foods alongside grain-heavy meals buffer phytate effects. Seasonal variety prevents chronic overexposure to any one anti-nutrient.</li>
+      <li><strong>Don't eliminate entire food categories.</strong> The more you shrink your diet, the more likely you are to develop hidden deficiencies and new intolerances over time. Small adjustments to preparation are almost always preferable to wholesale elimination.</li>
+      <li><strong>Ask "how" not just "what".</strong> In 95% of cases, the problem is not one molecule — it's how foods are grown, prepared, combined, and eaten. Zoom out before concluding a food is inherently problematic.</li>
+    </ol>
+  </section>
+
+  <!-- Quotes -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent4)"></span>Notable Quotes</h2>
+    <blockquote>
+      "We basically removed the friction from our food. But at the same time, we accidentally removed a protective layer that used to be built into traditional diets."
+    </blockquote>
+    <blockquote>
+      "The stacking effect is one of the reasons why some people suddenly feel like anti-nutrients are ruining their health. Not because the anti-nutrients are the root cause of the problems, but because we forgot how to deal with them in a natural way."
+    </blockquote>
+    <blockquote>
+      "How you eat matters just as much as what you eat. Because the more you shrink your diet, the more likely you are to run into other problems later on."
+    </blockquote>
+    <blockquote>
+      "In 95% of the cases, the problem is usually not one molecule or one anti-nutrient, but the system around it. How foods are grown, how they're prepared, and how they're combined and eaten."
+    </blockquote>
+    <blockquote>
+      "Preparation methods were not random traditions. Many of them evolved because they made foods more tolerable and safer for us."
+    </blockquote>
+  </section>
+
+  <!-- Core reframe -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent)"></span>The Core Reframe</h2>
+    <div class="callout">
+      <strong>Instead of asking:</strong> "Are anti-nutrients good or bad?"<br/><br/>
+      <strong>Ask instead:</strong> "Are we eating these foods in a way that resembles how our ancestors adapted to them over many generations?"<br/><br/>
+      When you answer <em>that</em> question, anti-nutrients stop looking like hidden poisons — and start looking like manageable compounds you can work with once you know what you're doing.
+    </div>
+  </section>
+
+  <footer>
+    Transcript generated with <strong>youtube-transcript-api</strong> &nbsp;|&nbsp; Highlights compiled by GitHub Copilot
+  </footer>
+
+</div>
+</body>
+</html>

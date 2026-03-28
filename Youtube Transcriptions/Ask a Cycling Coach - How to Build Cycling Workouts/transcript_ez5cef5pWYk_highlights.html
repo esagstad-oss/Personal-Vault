@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Highlights: How to Build Cycling Workouts — Ask a Cycling Coach Ep 578</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b27;
+      --card: #1e2535;
+      --accent: #4f8ef7;
+      --accent2: #f76d4f;
+      --accent3: #4fd97b;
+      --accent4: #f9c74f;
+      --accent5: #c77dff;
+      --accent6: #56cfe1;
+      --text: #e2e8f0;
+      --muted: #7a8599;
+      --border: #2a3144;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding: 2rem;
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .73rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .75rem;
+      border-radius: 99px;
+      margin-bottom: .75rem;
+    }
+    header h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: .4rem; }
+    header .sub { color: var(--accent4); font-weight: 600; font-size: .95rem; margin-bottom: .4rem; }
+    header .meta { color: var(--muted); font-size: .85rem; }
+    header .meta a { color: var(--accent); text-decoration: none; }
+    header .meta a:hover { text-decoration: underline; }
+
+    /* Summary */
+    .summary {
+      background: var(--card);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2rem;
+      font-size: .96rem;
+    }
+
+    /* Sections */
+    section { margin-bottom: 2.2rem; }
+    section h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+    /* Cards */
+    .cards { display: grid; gap: .9rem; }
+    .cards.two { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+    .cards.three { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+    }
+    .card h3 { font-size: .97rem; font-weight: 700; margin-bottom: .4rem; }
+    .card p, .card li { font-size: .9rem; color: #b8c0cc; }
+    .card ul { padding-left: 1.2rem; }
+    .card ul li { margin-bottom: .2rem; }
+
+    /* Zone table */
+    .zone-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .zone-table th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 600;
+      padding: .5rem .8rem;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .zone-table td { padding: .55rem .8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .zone-table tr:last-child td { border-bottom: none; }
+    .zone-pill {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .2rem .6rem;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    /* Facts */
+    .facts { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .fact-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .5rem .9rem;
+      font-size: .86rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    /* Rest ratio bars */
+    .rest-grid { display: grid; gap: .7rem; }
+    .rest-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .7rem 1rem;
+      font-size: .9rem;
+    }
+    .rest-label { min-width: 110px; font-weight: 700; flex-shrink: 0; }
+    .rest-bar-wrap { flex: 1; background: #12161f; border-radius: 4px; height: 8px; }
+    .rest-bar { height: 8px; border-radius: 4px; }
+    .rest-note { min-width: 130px; font-size: .8rem; color: var(--muted); text-align: right; }
+
+    /* Interval formats */
+    .formats { display: grid; gap: .7rem; }
+    .format {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .8rem 1.1rem;
+      display: flex;
+      gap: .9rem;
+      align-items: flex-start;
+    }
+    .format-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: .1rem; }
+    .format strong { display: block; font-size: .92rem; margin-bottom: .15rem; }
+    .format p { font-size: .86rem; color: #b8c0cc; }
+
+    /* Tips list */
+    .tips { counter-reset: tips; list-style: none; padding: 0; display: grid; gap: .7rem; }
+    .tips li {
+      counter-increment: tips;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .8rem 1rem;
+      font-size: .91rem;
+    }
+    .tips li::before {
+      content: counter(tips);
+      background: var(--accent3);
+      color: #0d1117;
+      font-weight: 800;
+      min-width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .78rem;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+
+    /* Quotes */
+    blockquote {
+      border-left: 3px solid var(--accent4);
+      background: var(--card);
+      border-radius: 0 10px 10px 0;
+      padding: .85rem 1.1rem;
+      font-style: italic;
+      color: #d4b96a;
+      font-size: .92rem;
+      margin-bottom: .7rem;
+    }
+    blockquote cite {
+      display: block;
+      margin-top: .3rem;
+      font-style: normal;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    /* Callout */
+    .callout {
+      background: #162238;
+      border: 1px solid #1e3a5f;
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      font-size: .93rem;
+      color: #93c5fd;
+    }
+    .callout strong { color: var(--accent); }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .8rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">Episode 578 — Video Highlights</div>
+    <h1>How to Build Cycling Workouts</h1>
+    <p class="sub">Most People Get This Wrong</p>
+    <p class="meta">
+      Ask a Cycling Coach — TrainerRoad &nbsp;|&nbsp;
+      <a href="https://www.youtube.com/watch?v=ez5cef5pWYk" target="_blank">youtube.com/watch?v=ez5cef5pWYk</a>
+      &nbsp;|&nbsp; feat. <strong>Hannah Finchamp</strong> (Pro MTB Racer)
+    </p>
+  </header>
+
+  <!-- Summary -->
+  <div class="summary">
+    A deep technical breakdown of how to structure cycling interval workouts across all training zones — Sweet Spot, Threshold, VO₂ Max, and Anaerobic. The episode explains the physiology behind each zone, the right interval formats, rest ratios, progressions, and common mistakes. Topped off with Hannah Finchamp's race learnings from a HC UCI stage race, UCI Marathon World Cup, and the Cactus Cup.
+  </div>
+
+  <!-- Key Concepts -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent)"></span>Key Concepts at a Glance</h2>
+    <div class="facts">
+      <div class="fact-pill">🎚️ Zones are <strong>faders</strong>, not switches — energy systems overlap</div>
+      <div class="fact-pill">💰 Threshold = the money maker for cyclists</div>
+      <div class="fact-pill">🔥 Sweet Spot is NOT meant to feel easy</div>
+      <div class="fact-pill">⚗️ Lactate is <em>jet fuel</em> — your body can burn its own exhaust</div>
+      <div class="fact-pill">📈 FTP is nearly irrelevant to TrainerRoad workout assignments</div>
+      <div class="fact-pill">💪 Anaerobic = neuromuscular recruitment, not just power numbers</div>
+      <div class="fact-pill">⏱️ VO₂ max: if you can hold it &gt;5 min, bump up threshold</div>
+      <div class="fact-pill">😴 Rest ratio matters as much as interval intensity</div>
+    </div>
+  </section>
+
+  <!-- Zone Overview Table -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent5)"></span>Zone Overview</h2>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="zone-table">
+        <thead>
+          <tr>
+            <th>Zone</th>
+            <th>% of FTP</th>
+            <th>Duration</th>
+            <th>Primary Goal</th>
+            <th>Key Feel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="zone-pill" style="background:#1a2e4a;color:#4f8ef7">Sweet Spot</span></td>
+            <td>88–94%</td>
+            <td>6–30+ min intervals</td>
+            <td>High aerobic benefit near threshold without the damaging fatigue</td>
+            <td>Hard but controllable by end of interval</td>
+          </tr>
+          <tr>
+            <td><span class="zone-pill" style="background:#2a1a1a;color:#f76d4f">Threshold</span></td>
+            <td>95–105%</td>
+            <td>5–45 min intervals</td>
+            <td>Push and raise your lactate threshold — the core of cycling fitness</td>
+            <td>Uncomfortable, hurts, longest sustained pain</td>
+          </tr>
+          <tr>
+            <td><span class="zone-pill" style="background:#1a2a1a;color:#4fd97b">VO₂ Max</span></td>
+            <td>106–120%</td>
+            <td>2–6 min intervals</td>
+            <td>Maximize oxygen uptake at the muscle (peak aerobic uptake)</td>
+            <td>Sharp, very painful, short duration</td>
+          </tr>
+          <tr>
+            <td><span class="zone-pill" style="background:#2a1a2a;color:#c77dff">Anaerobic</span></td>
+            <td>120–150%+</td>
+            <td>10–60 sec efforts</td>
+            <td>Neuromuscular recruitment — calling up all muscle fibres fast</td>
+            <td>Explosive, mentally taxing, requires full recovery between sets</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Zone Deep Dives -->
+  <section>
+    <h2><span class="dot" style="background:#4f8ef7"></span>Sweet Spot — The Sheltered Side of the Fence</h2>
+    <div class="cards two">
+      <div class="card">
+        <h3>What it is</h3>
+        <ul>
+          <li>The tipping point between high tempo and low threshold</li>
+          <li>Gets most of the benefits of threshold work without generating as much fatigue and muscular damage</li>
+          <li>Like standing under a fence in wind — sheltered, but you can feel the breeze on your head</li>
+          <li>You <em>can</em> use lactate as fuel in this zone — the body stays aerobic</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Common mistake</h3>
+        <ul>
+          <li><strong>It is NOT meant to feel easy.</strong> 3×30 min at 88% FTP is genuinely hard work</li>
+          <li>If sweet spot feels easy, you likely have an FTP increase coming</li>
+          <li>"If sweet spot is hard, your threshold is too high" — this is <em>false</em></li>
+          <li>By definition sweet spot is strenuous — that's the point</li>
+        </ul>
+      </div>
+    </div>
+    <br/>
+    <div class="formats">
+      <div class="format">
+        <div class="format-icon">📊</div>
+        <div>
+          <strong>Over/Unders (Under-Overs)</strong>
+          <p>Use sweet spot as the recovery between harder threshold or VO₂ intervals. E.g. 15–30 sec at sweet spot / 15–30 sec at VO₂ repeated for 5–8 min, then full recovery. Forces the body to recover while still producing high power — you can visibly watch the aerobic system re-engage.</p>
+        </div>
+      </div>
+      <div class="format">
+        <div class="format-icon">🚀</div>
+        <div>
+          <strong>Hard Starts</strong>
+          <p>Sprint hard to create a gap, then settle into sweet spot. Simulates a solo attack. Feels like threshold work. Tip: don't judge the interval by the first 15–20% — you'll be flooded with lactate. It will ease. <em>"It'll get easier"</em> until it does.</p>
+        </div>
+      </div>
+      <div class="format">
+        <div class="format-icon">⏳</div>
+        <div>
+          <strong>Rest guideline</strong>
+          <p>Sweet spot needs very little rest. At the top of a progression, rest nearly disappears entirely. &lt;10 min between intervals is generous — you can get away with much less.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="dot" style="background:#f76d4f"></span>Threshold — Where the Money Is Made</h2>
+    <div class="card" style="margin-bottom:.9rem;">
+      <h3>The Physiology (the exhaust metaphor)</h3>
+      <p style="margin-bottom:.6rem;">As you use more glycogen, your aerobic motor produces exhaust (hydrogen ions from lactate reprocessing). That exhaust accumulates and creates an acidic environment — the burn. At threshold, you hit the inflection point where exhaust is produced faster than it can be reprocessed. Unlike a car, your body can burn its own exhaust (lactate is "jet fuel") — but the leftover hydrogen is the problem.</p>
+      <p>Threshold work trains your body to reprocess more exhaust per session — it "gets the memo" and adapts. The strategy: progressively extend interval duration, even by 2 minutes at a time.</p>
+    </div>
+    <div class="callout" style="margin-bottom:.9rem;">
+      <strong>FTP ≠ your training anchor.</strong> Some athletes should train with a higher or lower power number than their actual maximal lactate steady state. TrainerRoad largely ignores your FTP and instead evaluates your ability independently in each zone — this is why it actually works.
+    </div>
+    <div class="formats">
+      <div class="format">
+        <div class="format-icon">🔁</div>
+        <div>
+          <strong>Over/Unders</strong>
+          <p>E.g. Pick a Guard: 2 min at 90% / 2 min at 105%, repeated × 3 = one set. Extremely race-specific — mimics a 2-person breakaway. Painful but highly effective even early in the season for moving threshold.</p>
+        </div>
+      </div>
+      <div class="format">
+        <div class="format-icon">📐</div>
+        <div>
+          <strong>Traditional cuts</strong>
+          <p>3×10, 5×10, 2×20. Valid, but overrated as the only format. Short threshold intervals (5×5 min) with limited rest are equally effective and more mentally manageable when you're building the zone.</p>
+        </div>
+      </div>
+      <div class="format">
+        <div class="format-icon">🛠️</div>
+        <div>
+          <strong>Ramps</strong>
+          <p>Intensity gradually climbs across the interval. Useful for climbing-specific build phases — mimics a finishing climb where effort escalates to the summit.</p>
+        </div>
+      </div>
+      <div class="format">
+        <div class="format-icon">⏳</div>
+        <div>
+          <strong>Rest guideline</strong>
+          <p>Rest should be 50–100% of your interval time. Example: 10-min interval → 5–10 min rest. Don't try to do an hour on day one — build to it from 6 minutes upward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="dot" style="background:#4fd97b"></span>VO₂ Max — Peak Aerobic Uptake</h2>
+    <div class="card" style="margin-bottom:.9rem;">
+      <h3>The physiology bottleneck</h3>
+      <p>The limiting factor is not usually breathing — it's the muscle's ability to pull oxygen out of the blood. VO₂ max intervals increase capillary density, create more mitochondria, and build more oxygen "receiving docks" at the muscle level. You're training your body to uptake more oxygen at peak effort, delaying the point where you go anaerobic.</p>
+    </div>
+    <div class="formats">
+      <div class="format">
+        <div class="format-icon">⏱️</div>
+        <div>
+          <strong>Traditional: 2–5 min intervals</strong>
+          <p>Start at 106% FTP, build toward 120%. If you can hold VO₂ intervals beyond 5 minutes, your threshold is ready to be bumped. Rest: ~4–5 min max between efforts. "5×5 at well-calibrated VO₂ max" = you've beaten the game.</p>
+        </div>
+      </div>
+      <div class="format">
+        <div class="format-icon">🔀</div>
+        <div>
+          <strong>On/Offs</strong>
+          <p>E.g. 15–30 sec on / 15–30 sec off, repeated for 10–15 min sets. Mentally easier than sustained intervals. Accumulates "time under tension" at VO₂ even before you can hold 5-minute intervals. You reach peak aerobic uptake later in the set, but you still spend significant time there. Great for base phase introduction.</p>
+        </div>
+      </div>
+      <div class="format">
+        <div class="format-icon">🌊</div>
+        <div>
+          <strong>Float Sets</strong>
+          <p>Alternate 15–30 sec at VO₂ / 15–30 sec at sweet spot, in sets of 5–8 min. Simulates MTB, cyclocross, and criterium racing perfectly. Very race-specific — the float period keeps you honest aerobically while you recover from the surge.</p>
+        </div>
+      </div>
+      <div class="format">
+        <div class="format-icon">⚡</div>
+        <div>
+          <strong>Why power targets matter for VO₂</strong>
+          <p>Riding purely by feel produces a spike then a "knife blade drop" — you're training yourself to coalesce to peak uptake rather than sustain it. A power target forces you to hold high output <em>at</em> peak aerobic uptake, which is where the real adaptations happen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="dot" style="background:#c77dff"></span>Anaerobic — Neuromuscular Recruitment</h2>
+    <div class="cards two">
+      <div class="card">
+        <h3>The goal</h3>
+        <ul>
+          <li>Recruit <em>all</em> available muscle fibres simultaneously — fast</li>
+          <li>Like switching from an Atkinson-cycle 4-cylinder to a full V6</li>
+          <li>Spicier attacks, faster acceleration, more explosive power even for endurance athletes</li>
+          <li>Improves how quickly you reach peak power — from 15 sec down to 3–4 pedal strokes</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Key rules</h3>
+        <ul>
+          <li><strong>Amplitude is everything</strong> — intervals too close together = power drops = wasted session</li>
+          <li>Give full recovery between sets (much more rest than any other zone)</li>
+          <li>Reserved for later in the season — neuromuscular connections need base to build on</li>
+          <li>Also a <em>skill</em>: gear selection, body position, how you hold the bike all matter</li>
+        </ul>
+      </div>
+    </div>
+    <br/>
+    <div class="formats">
+      <div class="format"><div class="format-icon">🪜</div><div><strong>Ladders / Steps (e.g. "Babos")</strong><p>Shorter = higher intensity; each step gets slightly longer but slightly lower. Vicious, but effective at varying the stimulus.</p></div></div>
+      <div class="format"><div class="format-icon">⚔️</div><div><strong>Attacks</strong><p>Hard high-intensity hit, then hold threshold / sweet spot / VO₂ for an extended block. Extremely race-specific — simulates a real attack with the follow-through effort.</p></div></div>
+    </div>
+  </section>
+
+  <!-- Rest Ratios -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent4)"></span>Rest Ratios by Zone</h2>
+    <div class="rest-grid">
+      <div class="rest-row">
+        <div class="rest-label" style="color:#4f8ef7">Sweet Spot</div>
+        <div class="rest-bar-wrap"><div class="rest-bar" style="width:10%;background:#4f8ef7"></div></div>
+        <div class="rest-note">Minimal → near zero at top of progression</div>
+      </div>
+      <div class="rest-row">
+        <div class="rest-label" style="color:#f76d4f">Threshold</div>
+        <div class="rest-bar-wrap"><div class="rest-bar" style="width:75%;background:#f76d4f"></div></div>
+        <div class="rest-note">50–100% of interval time</div>
+      </div>
+      <div class="rest-row">
+        <div class="rest-label" style="color:#4fd97b">VO₂ Max</div>
+        <div class="rest-bar-wrap"><div class="rest-bar" style="width:45%;background:#4fd97b"></div></div>
+        <div class="rest-note">~4–5 min max between efforts</div>
+      </div>
+      <div class="rest-row">
+        <div class="rest-label" style="color:#c77dff">Anaerobic</div>
+        <div class="rest-bar-wrap"><div class="rest-bar" style="width:90%;background:#c77dff"></div></div>
+        <div class="rest-note">Full recovery — amplitude is everything</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Takeaways -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent3)"></span>Key Practical Takeaways</h2>
+    <ol class="tips">
+      <li><strong>Zones are faders, not switches.</strong> There's no binary flip between energy systems. You're always mixing — the zones just describe where the emphasis sits.</li>
+      <li><strong>Threshold is the foundation of everything.</strong> All other training either pushes it up from below (sweet spot/endurance) or pulls it up from above (VO₂/anaerobic).</li>
+      <li><strong>Don't start threshold training with long intervals.</strong> Build from 5–6 minute efforts. Add 2 minutes each time. "Last time you held 6 min, today you hold 8." This is how threshold actually moves.</li>
+      <li><strong>Sweet spot should feel hard.</strong> If it doesn't, expect an FTP increase notification. It's strenuous by design — 3×30 min at 88% FTP is serious work.</li>
+      <li><strong>Hard starts are underutilised.</strong> Sprint to open a gap, settle into sweet spot or threshold. Teaches your body to recover aerobically after a maximal effort — essential race skill.</li>
+      <li><strong>Don't judge interval difficulty in the first 15–20%.</strong> You're flooded with lactate. Your body will catch up. Be a goldfish — forget the start and reassess later.</li>
+      <li><strong>Use on/offs as your VO₂ max gateway.</strong> They accumulate "time under tension" at VO₂ before you can sustain full intervals. Mentally easier. Introduce them toward the end of base phase.</li>
+      <li><strong>Anaerobic work belongs late in the season</strong> for most athletes. You need the aerobic base first. Reserve it for late build and race-specific phases.</li>
+      <li><strong>FTP is a rough guide, not gospel.</strong> Some athletes train better above or below their FTP-derived zones. The best coaches decouple athletes from their FTP number — TrainerRoad evaluates each zone independently.</li>
+      <li><strong>Consistency compounds.</strong> You can train your body to be good at ANY zone — you just have to meet yourself where you are and achieve progressive overload. "I'm not good at threshold" usually just means "I've never trained threshold."</li>
+    </ol>
+  </section>
+
+  <!-- Hannah's Race Learnings -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent2)"></span>Hannah's Race Learnings (2025 Early Season)</h2>
+    <div class="cards three">
+      <div class="card">
+        <h3>🏔️ Mediterranean Epic (HC UCI Stage Race)</h3>
+        <ul>
+          <li>3rd overall</li>
+          <li>Same level as Cape Epic — world-class field</li>
+          <li>Revealed clear weaknesses to target for rest of season</li>
+          <li>High-level early races = honest assessment of where your holes are</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🌍 UCI Marathon World Cup</h3>
+        <ul>
+          <li>5th overall</li>
+          <li>Crashed twice — on fire roads, not technical trail</li>
+          <li>Key lesson: <strong>focus doesn't stop</strong>. She crashed the moment she let her guard down on "easy" sections after nailing gnarly tech features</li>
+          <li>"The racing is in the in-betweens too"</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🌵 Cactus Cup (B-Race)</h3>
+        <ul>
+          <li>Strategic "practice race" instead of travelling to Midsouth</li>
+          <li>Used it to trial new warm-up, nutrition, and hydration strategies safely</li>
+          <li>"Scary to change things at big races — practice them at low-consequence races first"</li>
+          <li>8 race days in the bank before Sea Otter</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notable Quotes -->
+  <section>
+    <h2><span class="dot" style="background:var(--accent4)"></span>Notable Quotes</h2>
+    <blockquote>
+      "There's no system of switches. It's all faders. We're just trying to imply what's going on in our bodies with them."
+      <cite>— Host</cite>
+    </blockquote>
+    <blockquote>
+      "Sweet spot work is not meant to feel easy. It is not designed to feel easy. It shouldn't feel easy."
+      <cite>— Host</cite>
+    </blockquote>
+    <blockquote>
+      "Lactate is actually wonderful jet fuel for our bodies — it's like super fuel. It's great. But when we produce lactate and then reprocess it, there's a math equation that leaves some hydrogen to the side… and that creates an acidic environment."
+      <cite>— Host</cite>
+    </blockquote>
+    <blockquote>
+      "I usually scream 'it'll get easier' in my head until it does."
+      <cite>— Hannah Finchamp, on hard start intervals</cite>
+    </blockquote>
+    <blockquote>
+      "I remember thinking I'm just not good at threshold work. My body just doesn't do it well. And it was because I just never did it."
+      <cite>— Hannah Finchamp</cite>
+    </blockquote>
+    <blockquote>
+      "Focus doesn't stop. Focus is in all of the moments. The racing is in the in-betweens as well."
+      <cite>— Hannah Finchamp, after crashing on a fire road while focused on a competitor</cite>
+    </blockquote>
+  </section>
+
+  <footer>
+    Transcript generated with <strong>youtube-transcript-api</strong> &nbsp;|&nbsp; Highlights compiled by GitHub Copilot
+  </footer>
+
+</div>
+</body>
+</html>
